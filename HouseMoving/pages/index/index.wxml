@@ -3,7 +3,7 @@
   <view class="tabs">
     <radio-group class="radio-group" bindchange="radioChange">
       <label class="radio" wx:for="{{items}}">
-        <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+        <radio value="{{item.value}}" checked="{{item.checked}}" />{{item.name}}
       </label>
     </radio-group>
   </view>
@@ -15,14 +15,92 @@
     <button class="btn" bindtap="openCarExplain"> 车型说明 </button>
   </view>
   <view class="row-wrap">
-     <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
+    <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
       <view>
-       <text>{{casArray[casIndex]}}</text>
+        <text>{{casArray[casIndex]}}</text>
       </view>
-     </picker>
-    </view>
-  
-<!--高德-->
+    </picker>
+  </view>
+
+  <ul>
+    <li>
+      <view>
+        <icon type='info'></icon>
+        <text>起始地</text>
+      </view>
+
+      <view class="mapSeach">
+        <view class="section">
+          <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}' />
+        </view>
+        <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i">
+          {{i.name}}
+        </view>
+      </view>
+
+      <view class="row-wrap">
+        <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
+          <view>
+            <text>{{casArray[casIndex]}}</text>
+          </view>
+        </picker>
+      </view>
+    </li>
+    <li>
+      <view>
+        <icon type='info'></icon>
+        <text>目的地</text>
+      </view>
+
+      <view class="mapSeach">
+        <view class="section">
+          <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}' />
+        </view>
+        <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" class="text_box" wx:for="{{tips}}" wx:for-item="i">
+          {{i.name}}
+        </view>
+      </view>
+
+      <view class="row-wrap">
+        <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
+          <view>
+            <text>{{casArray[casIndex]}}</text>
+          </view>
+        </picker>
+      </view>
+    </li>
+  </ul>
+
+  <view class="passingPlace">
+    <block wx:for="{{passingPlaceLists}}" wx:key="id">
+      <view>
+        <icon type='info'></icon>
+        <text>途经点</text>
+      </view>
+
+      <view class="mapSeach">
+        <view class="section">
+          <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}' />
+        </view>
+        <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" class="text_box" wx:for="{{tips}}" wx:for-item="i">
+          {{i.name}}
+        </view>
+      </view>
+
+      <view class="row-wrap">
+        <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
+          <view>
+            <text>{{casArray[casIndex]}}</text>
+          </view>
+        </picker>
+      </view>
+
+      <icon type='cancel' bindtap='delPassingPlace' data-index="{{index}}"></icon>
+    </block>
+  </view>
+  <button bindtap='addPassingPlace'>
+    <icon type='info'></icon>还有途径点~</button>
+  <!--高德
 
 <view class="section">
   <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}'  />
@@ -31,8 +109,8 @@
 style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i">
   {{i.name}}
 </view>
-
-<!--百度
+-->
+  <!--百度
 <view class="section"> 
   <input placeholder="输入关键字" auto-focus type="text" bindinput="bindKeyInput"/> 
 </view> 

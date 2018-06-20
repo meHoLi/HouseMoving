@@ -29,8 +29,11 @@ Page({
     keywords:'',
     displayValue: 'block',
     distance: '',
-    //baidu
-    sugData: '' 
+    //百度
+    sugData: '' ,
+    //途经点
+    passingPlaceLists: [],
+    itemCount: 0
   },
 
   onLoad: function () {
@@ -165,5 +168,32 @@ Page({
     this.setData({
       casIndex: e.detail.value
     })
+  },
+  //添加途经点
+  addPassingPlace: function () {
+    var { passingPlaceLists, itemCount } = this.data;
+    var newData = { id: itemCount };
+    passingPlaceLists.push(newData);
+    this.setData({
+      passingPlaceLists: passingPlaceLists,
+      itemCount: itemCount + 1,
+    })
+  },
+  //删除途径点
+  delPassingPlace: function (e) {
+    var { passingPlaceLists, itemCount } = this.data;
+    var index = e.target.dataset.index;
+
+    passingPlaceLists.splice(index, 1)
+    for (var i = 0; i < passingPlaceLists.length; i++) {
+      passingPlaceLists[i].id = i
+    }
+    itemCount = itemCount - 1
+
+    this.setData({
+      passingPlaceLists: passingPlaceLists,
+      itemCount: itemCount + 1,
+    })
+    console.log(passingPlaceLists.length, '////////', itemCount)
   }
 })
