@@ -14,6 +14,22 @@
     </view>
     <button class="btn" bindtap="openCarExplain"> 车型说明 </button>
   </view>
+  <view class="row-wrap">
+     <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
+      <view>
+       <text>{{casArray[casIndex]}}</text>
+      </view>
+     </picker>
+    </view>
+  
+<!--index.wxml-->
+
+<view class="section">
+  <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}'  />
+</view>
+<view bindtouchstart="bindSearch" data-keywords="{{i.name}}" class="text_box" wx:for="{{tips}}" wx:for-item="i">
+  {{i.name}}
+</view>
   <!-- <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
