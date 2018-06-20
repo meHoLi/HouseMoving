@@ -3,7 +3,7 @@
   <view class="tabs">
     <radio-group class="radio-group" bindchange="radioChange">
       <label class="radio" wx:for="{{items}}">
-        <radio value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
+        <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
       </label>
     </radio-group>
   </view>
