@@ -2,6 +2,8 @@
 //获取应用实例
 const app = getApp()
 var amapFile = require('../../utils/amap-wx.js'); 
+// 引用百度地图微信小程序JSAPI模块 
+var bmap = require('../../utils/bmap-wx.min.js'); 
 var markersData = [];
 Page({
   data: {
@@ -24,14 +26,22 @@ Page({
     casIndex: 0,
     //高德
     tips: {},
-    keywords:''
+    keywords:'',
+    displayValue: 'block',
+    distance: '',
+    //baidu
+    sugData: '' 
   },
 
   onLoad: function () {
 
   },
+  //高德
   bindInput: function (e) {
     var that = this;
+    that.setData({
+      displayValue: 'block'
+    })
     var keywords = e.detail.value;
     var myAmapFun = new amapFile.AMapWX({ key: 'ab3b9da6a118e991647e3b91606d6fba' });
     myAmapFun.getInputtips({
@@ -46,15 +56,77 @@ Page({
 
       }
     })
+    //计算地址距离
+    myAmapFun.getDrivingRoute({
+      origin: '116.481028,39.989643',
+      destination: '116.434446,39.90816',
+      success: function (data) {
+        var points = [];
+        if (data.paths && data.paths[0] && data.paths[0].steps) {
+          var steps = data.paths[0].steps;
+          for (var i = 0; i < steps.length; i++) {
+            var poLen = steps[i].polyline.split(';');
+            for (var j = 0; j < poLen.length; j++) {
+              points.push({
+                longitude: parseFloat(poLen[j].split(',')[0]),
+                latitude: parseFloat(poLen[j].split(',')[1])
+              })
+            }
+          }
+        }
+        if (data.paths[0] && data.paths[0].distance) {
+          that.setData({
+            distance: data.paths[0].distance + '米'
+          });
+          console.log(that.data.distance);
+        }
+
+      },
+      fail: function (info) {
+
+      }
+    })
   },
+    //获取地址信息
   bindSearch: function (e) {
+    console.log(e.target.dataset.location);    
     this.setData({
-      keywords: e.target.dataset.keywords
+      keywords: e.target.dataset.keywords,
+      displayValue:'none'
     })
     //wx.redirectTo({
    //   url: url
     //})
   },
+  //百度
+  // 绑定input输入 
+  bindKeyInput: function (e) {
+    var that = this;
+    // 新建百度地图对象 
+    var BMap = new bmap.BMapWX({
+      ak: 'ApYZvojZZg4Ok2GjvQhY3D82OR5FiYhb'
+    });
+    var fail = function (data) {
+      console.log(data)
+    };
+    var success = function (data) {
+      var sugData = '';
+      for (var i = 0; i < data.result.length; i++) {
+        sugData = sugData + data.result[i].name + '\n';
+      }
+      that.setData({
+        sugData: sugData
+      });
+    }
+    // 发起suggestion检索请求 
+    BMap.suggestion({
+      query: e.detail.value,
+      region: '北京',
+      city_limit: true,
+      fail: fail,
+      success: success
+    });
+  } ,
   //车型事件处理函数
   radioChange: function (e) {
     let value = e.detail.value;

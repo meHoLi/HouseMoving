@@ -22,14 +22,23 @@
      </picker>
     </view>
   
-<!--index.wxml-->
+<!--高德-->
 
 <view class="section">
   <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}'  />
 </view>
-<view bindtouchstart="bindSearch" data-keywords="{{i.name}}" class="text_box" wx:for="{{tips}}" wx:for-item="i">
+<view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}'
+style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i">
   {{i.name}}
 </view>
+
+<!--百度
+<view class="section"> 
+  <input placeholder="输入关键字" auto-focus type="text" bindinput="bindKeyInput"/> 
+</view> 
+<view class="sug_info"> 
+  <text>{{sugData}}</text> 
+</view>-->
   <!-- <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
