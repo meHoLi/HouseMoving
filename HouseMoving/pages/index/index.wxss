@@ -1,21 +1,25 @@
 /**index.wxss**/
-.userinfo {
+.carExplain{
+  display: flex;
+  flex-direction: row; 
+  width: 100%;
+  font-size: 36rpx;
+}
+.carExplain-left{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  flex: 1;
+  width: 70%;
+}
+.carExplain-left-top, .carExplain-left-bottom{
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 200px;
+.btn{
+  display: flex;
+  flex: 1;
+  font-size: 36rpx;
 }
