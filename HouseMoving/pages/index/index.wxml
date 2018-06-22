@@ -56,7 +56,7 @@
         <view class="section">
           <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}' />
         </view>
-        <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" class="text_box" wx:for="{{tips}}" wx:for-item="i">
+        <view bindtouchstart="bindSearch" data-keywords="{{i.name}}"  data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i">
           {{i.name}}
         </view>
       </view>
@@ -82,7 +82,7 @@
         <view class="section">
           <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}' />
         </view>
-        <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" class="text_box" wx:for="{{tips}}" wx:for-item="i">
+        <view bindtouchstart="bindSearch" data-keywords="{{i.name}}"  data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i">
           {{i.name}}
         </view>
       </view>
