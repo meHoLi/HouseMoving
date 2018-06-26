@@ -31,7 +31,7 @@
 
       <view class="mapSeach">
         <view class="section">
-          <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}' />
+          <input bindinput="bindInput" placeholder="搜索" focus="true" data-address='sd' value='{{keywords}}' />
         </view>
         <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i">
           {{i.name}}
@@ -54,7 +54,7 @@
 
       <view class="mapSeach">
         <view class="section">
-          <input bindinput="bindInput" placeholder="搜索" focus="true" value='{{keywords}}' />
+          <input bindinput="bindInput" placeholder="搜索" focus="true" data-address='ed' value='{{keywords}}' />
         </view>
         <view bindtouchstart="bindSearch" data-keywords="{{i.name}}"  data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i">
           {{i.name}}

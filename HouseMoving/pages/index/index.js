@@ -45,10 +45,11 @@ Page({
     that.setData({
       displayValue: 'block'
     })
-    var keywords = e.detail.value;
+    var dv = e.detail.value;
+    var addressValue= e.target.dataset.address;    
     var myAmapFun = new amapFile.AMapWX({ key: 'ab3b9da6a118e991647e3b91606d6fba' });
     myAmapFun.getInputtips({
-      keywords: keywords,
+      keywords: dv,
       location: '',
       success: function (data) {
         if (data && data.tips) {
