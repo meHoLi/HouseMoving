@@ -32,9 +32,9 @@
 
         <view class="mapSeach">
           <view class="section">
-            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address='sd' value='{{addressValue=="sd"?keywords:""}}' />
+            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address='sd' value='{{ keywordssd}}' />
           </view>
-          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='sd'}}">
+          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='sd'}}" data-parentid="{{'sd'}}">
             {{i.name}}
           </view>
         </view>
@@ -56,9 +56,9 @@
 
         <view class="mapSeach">
           <view class="section">
-            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address='ed' value='{{addressValue=="ed"?keywords:""}}'  />
+            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address='ed' value='{{ keywordsed}}'  />
           </view>
-          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='ed'}}">
+          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='ed'}}" data-parentid="{{'ed'}}">
             {{i.name}}
           </view>
         </view>
@@ -82,9 +82,9 @@
 
         <view class="mapSeach">
           <view class="section">
-            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address="{{index}}" value='{{addressValue==item.id?keywords:""}}' ></input>
+            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address="{{index}}" value='{{ jsonArray[index].keywords}}' />
           </view>
-          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i"  wx:if="{{addressValue==item.id}}"  data-index="{{index}}">
+          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i"  wx:if="{{addressValue==item.id}}"  data-parentid="{{item.id}}" data-index="{{index}}">
             {{i.name}}
           </view>
         </view>
