@@ -29,6 +29,7 @@ Page({
     keywords:'',
     displayValue: 'block',
     distance: '',
+    addressValue:'',
     //百度
     sugData: '' ,
     //途经点
@@ -90,7 +91,8 @@ Page({
       displayValue: 'block'
     })
     var dv = e.detail.value;
-    var addressValue= e.target.dataset.address;    
+    var addressValue= e.target.dataset.address;  
+    console.log(addressValue);    
     var myAmapFun = new amapFile.AMapWX({ key: 'ab3b9da6a118e991647e3b91606d6fba' });
     myAmapFun.getInputtips({
       keywords: dv,
@@ -98,7 +100,8 @@ Page({
       success: function (data) {
         if (data && data.tips) {
           that.setData({
-            tips: data.tips
+            tips: data.tips,
+            addressValue: addressValue
           });
         }
 
@@ -137,11 +140,12 @@ Page({
   },
     //获取地址信息
   bindSearch: function (e) {
-    console.log(e.target.dataset.location);    
-    this.setData({
-      keywords: e.target.dataset.keywords,
-      displayValue:'none'
-    })
+    console.log(e.target.dataset.location); 
+
+
+    var jsonData = { keywords: e.target.dataset.keywords,
+      displayValue: 'none', index: e.target.dataset.index};      
+    this.setData(jsonData)
     //wx.redirectTo({
    //   url: url
     //})
