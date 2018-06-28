@@ -48,3 +48,22 @@
   border-bottom:1px solid #c3c3c3;
   padding-bottom:10px
 }
+
+/* 订单备注信息 */
+.remarkInfo{
+  height:152rpx;
+  font-size: 30rpx;
+  text-indent: 28rpx;
+  border: 1rpx solid gainsboro;
+  padding-top: 30rpx;
+  margin: 0 auto;
+  overflow: hidden;   
+  position: relative; 
+}
+.currentRemarkInfo{
+  font-size: 28rpx;
+  color: gray;
+  position: absolute;
+  right: 25rpx;
+  bottom: 25rpx;
+}

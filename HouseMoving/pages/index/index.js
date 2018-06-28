@@ -78,7 +78,10 @@ Page({
     days: days,
     hours:hours,
     minutes: minutes,
-    value: [9999, 1, 1]
+    value: [9999, 1, 1],
+
+    distance:0,
+    price:0
   },
 
   onLoad: function () {
@@ -304,5 +307,17 @@ Page({
       hour: this.data.hours[val[1]],
       minute: this.data.minutes[val[2]]
     })
+  },
+
+  //订单备注字数限制
+  bindRemarkInput: function (e) {
+    var value = e.detail.value;
+    var len = parseInt(value.length);
+
+    if (len > 200) return;
+
+    this.setData({
+      currentRemarkInfoLen: len //当前字数  
+    });
   }
 })
