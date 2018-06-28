@@ -110,7 +110,6 @@ Page({
     })
     var dv = e.detail.value;
     var addressValue = e.target.dataset.address;
-    console.log(addressValue);
     var myAmapFun = new amapFile.AMapWX({
       key: 'ab3b9da6a118e991647e3b91606d6fba'
     });
@@ -149,7 +148,7 @@ Page({
           that.setData({
             distance: data.paths[0].distance + '米'
           });
-          //console.log(that.data.distance);
+          console.log(that.data.distance);
         }
 
       },
