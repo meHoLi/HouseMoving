@@ -29,30 +29,45 @@ let time = util.formatTime(new Date())
 Page({
   data: {
     //车型计价和容量
-    carExplainTop:'计价：起步208元(10公里)，超出5元/公里',
+    carExplainTop: '计价：起步208元(10公里)，超出5元/公里',
     carExplainBottom: '容量：可容纳10个包裹，单个包裹限重15公斤',
-    items: [
-      { name: '小面', value: 'car1', checked: 'true' },
-      { name: '金杯', value: 'car2' },
-      { name: '全顺', value: 'car3'},
-      { name: '厢货', value: 'car4' }
+    items: [{
+        name: '小面',
+        value: 'car1',
+        checked: 'true'
+      },
+      {
+        name: '金杯',
+        value: 'car2'
+      },
+      {
+        name: '全顺',
+        value: 'car3'
+      },
+      {
+        name: '厢货',
+        value: 'car4'
+      }
     ],
     //下拉框
     nickName: "",
     avatarUrl: "",
-    casArray: ['电梯-免费', '1楼-免费', '2楼-加收20元', '3楼-加收30元', '4楼-加收40元', '5楼-加收50元', '6楼-加收60元', '7楼-加收70元','8楼-加收80元'],
+    casArray: ['电梯-免费', '1楼-免费', '2楼-加收20元', '3楼-加收30元', '4楼-加收40元', '5楼-加收50元', '6楼-加收60元', '7楼-加收70元', '8楼-加收80元'],
     userName: '',
     mobile: '',
     Gender: 'female',
     casIndex: 0,
     //高德
     tips: {},
-    keywords:'',
+    keywords: '',
+    keywordssd: '',
+    keywordsed: '',
     displayValue: 'block',
     distance: '',
-    addressValue:'',
+    addressValue: '',
+    jsonArray: [],
     //百度
-    sugData: '' ,
+    sugData: '',
     //途经点
     passingPlaceLists: [],
     itemCount: 0,
@@ -79,19 +94,20 @@ Page({
     // })
   },
   //高德
-  bindInput: function (e) {
+  bindInput: function(e) {
     var that = this;
     that.setData({
       displayValue: 'block'
     })
     var dv = e.detail.value;
-    var addressValue= e.target.dataset.address;  
-    console.log(addressValue);    
-    var myAmapFun = new amapFile.AMapWX({ key: 'ab3b9da6a118e991647e3b91606d6fba' });
+    var addressValue = e.target.dataset.address;
+    var myAmapFun = new amapFile.AMapWX({
+      key: 'ab3b9da6a118e991647e3b91606d6fba'
+    });
     myAmapFun.getInputtips({
       keywords: dv,
       location: '',
-      success: function (data) {
+      success: function(data) {
         if (data && data.tips) {
           that.setData({
             tips: data.tips,
@@ -105,7 +121,7 @@ Page({
     myAmapFun.getDrivingRoute({
       origin: '116.481028,39.989643',
       destination: '116.434446,39.90816',
-      success: function (data) {
+      success: function(data) {
         var points = [];
         if (data.paths && data.paths[0] && data.paths[0].steps) {
           var steps = data.paths[0].steps;
@@ -127,35 +143,67 @@ Page({
         }
 
       },
-      fail: function (info) {
+      fail: function(info) {
 
       }
     })
   },
-    //获取地址信息
-  bindSearch: function (e) {
-    console.log(e.target.dataset.location); 
+  //获取地址信息
+  bindSearch: function(e) {
+    //console.log(e.target.dataset.location); 
+    let parentid = e.target.dataset.parentid;
+    let keywords = e.target.dataset.keywords;
+    //起始地
+    if (parentid == 'sd') {
+      this.setData({
+        keywordssd: keywords,
+        displayValue: 'none'
+      })//目的地
+    } else if (parentid == 'ed') {
+      this.setData({
+        keywordsed: keywords,
+        displayValue: 'none'
+      })
+    } else {
 
+      //动态添加的地址逻辑 
+      var jsonData = {
+        keywords: keywords,
+        parentid: parentid
+      };
+      var {
+        jsonArray,
+        itemCount
+      } = this.data;
 
-    var jsonData = { keywords: e.target.dataset.keywords,
-      displayValue: 'none', index: e.target.dataset.index};      
-    this.setData(jsonData)
-    //wx.redirectTo({
-   //   url: url
-    //})
+      let isUpdate = false;
+      for (let i = 0; i < jsonArray.length; i++) {
+        if (jsonArray[i].parentid == jsonData.parentid) {
+          jsonArray[i] = jsonData;
+          isUpdate = true;
+        }
+      }
+      if (isUpdate == false) {
+        jsonArray.push(jsonData);
+      }
+      this.setData({
+        jsonArray: jsonArray,
+        displayValue: 'none'
+      })
+    }
   },
   //百度
   // 绑定input输入 
-  bindKeyInput: function (e) {
+  bindKeyInput: function(e) {
     var that = this;
     // 新建百度地图对象 
     var BMap = new bmap.BMapWX({
       ak: 'ApYZvojZZg4Ok2GjvQhY3D82OR5FiYhb'
     });
-    var fail = function (data) {
+    var fail = function(data) {
       console.log(data)
     };
-    var success = function (data) {
+    var success = function(data) {
       var sugData = '';
       for (var i = 0; i < data.result.length; i++) {
         sugData = sugData + data.result[i].name + '\n';
@@ -172,50 +220,56 @@ Page({
       fail: fail,
       success: success
     });
-  } ,
+  },
   //车型事件处理函数
-  radioChange: function (e) {
+  radioChange: function(e) {
     let value = e.detail.value;
     if (value == 'car1') {
-     this.data.carExplainTop = '起步208元(10公里)，超出5元/公里';
-     this.data.carExplainBottom = '容量：可容纳10个包裹，单个包裹限重15公斤';
-    }
-    else if (value == 'car2') {
+      this.data.carExplainTop = '起步208元(10公里)，超出5元/公里';
+      this.data.carExplainBottom = '容量：可容纳10个包裹，单个包裹限重15公斤';
+    } else if (value == 'car2') {
       this.data.carExplainTop = '起步288元(10公里)，超出6元/公里';
       this.data.carExplainBottom = '容量：可容纳15个包裹，单个包裹限重15公斤';
-    }
-    else if (value == 'car3') {
+    } else if (value == 'car3') {
       this.data.carExplainTop = '起步388元(10公里)，超出8元/公里';
       this.data.carExplainBottom = '可容纳20个包裹，单个包裹限重15公斤';
-    }
-    else if (value == 'car4') {
+    } else if (value == 'car4') {
       this.data.carExplainTop = '起步1288元(10公里)，超出10元/公里';
       this.data.carExplainBottom = '可容纳30个包裹，单个包裹限重15公斤';
     }
     this.setData({
-      carExplainTop: this.data.carExplainTop, 
+      carExplainTop: this.data.carExplainTop,
       carExplainBottom: this.data.carExplainBottom
     });
   },
-  openCarExplain: function(){
+  openCarExplain: function() {
     console.log('车型说明')
   },
-   //下拉框事件
-  bindCasPickerChange: function (e) {
+  //下拉框事件
+  bindCasPickerChange: function(e) {
     console.log('乔丹选的是', this.data.casArray[e.detail.value])
     if (e.detail.value == 4) {
-      this.setData({ reply: true })
+      this.setData({
+        reply: true
+      })
     } else {
-      this.setData({ reply: false })
+      this.setData({
+        reply: false
+      })
     }
     this.setData({
       casIndex: e.detail.value
     })
   },
   //添加途经点
-  addPassingPlace: function () {
-    var { passingPlaceLists, itemCount } = this.data;
-    var newData = { id: itemCount };
+  addPassingPlace: function() {
+    var {
+      passingPlaceLists,
+      itemCount
+    } = this.data;
+    var newData = {
+      id: itemCount
+    };
     passingPlaceLists.push(newData);
     this.setData({
       passingPlaceLists: passingPlaceLists,
@@ -223,8 +277,11 @@ Page({
     })
   },
   //删除途径点
-  delPassingPlace: function (e) {
-    var { passingPlaceLists, itemCount } = this.data;
+  delPassingPlace: function(e) {
+    var {
+      passingPlaceLists,
+      itemCount
+    } = this.data;
     var index = e.target.dataset.index;
 
     passingPlaceLists.splice(index, 1)
