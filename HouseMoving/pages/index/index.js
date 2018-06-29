@@ -1,12 +1,16 @@
 //index.js
 //获取应用实例
 var app = getApp()
-var amapFile = require('../../utils/amap-wx.js'); 
+var amapFile = require('../../utils/amap-wx.js');
 // 引用百度地图微信小程序JSAPI模块 
-var bmap = require('../../utils/bmap-wx.min.js'); 
+var bmap = require('../../utils/bmap-wx.min.js');
 //使用小程序的日期控件
 var util = require('../../utils/util.js')
 var markersData = [];
+//高德地图实例
+var myAmapFun = new amapFile.AMapWX({
+  key: 'ab3b9da6a118e991647e3b91606d6fba'
+});
 
 const date = new Date()
 const days = []
@@ -63,28 +67,32 @@ Page({
     keywordssd: '',
     keywordsed: '',
     displayValue: 'block',
-    distance: '',
     addressValue: '',
     jsonArray: [],
+    jsonLocationArray: [],
+    //起点经纬度
+    origin: "",
+    //终点经纬度
+    destination: "",
     //百度
     sugData: '',
     //途经点
     passingPlaceLists: [],
     itemCount: 0,
     month: '',
-    day:'',
-    hour:'',
-    minute:'',
+    day: '',
+    hour: '',
+    minute: '',
     days: days,
-    hours:hours,
+    hours: hours,
     minutes: minutes,
     value: [9999, 1, 1],
 
-    distance:0,
-    price:0
+    distance: 0,
+    price: 0
   },
 
-  onLoad: function () {
+  onLoad: function() {
     // var that = this
     // //调用应用实例的方法获取全局数据
     // app.getUserInfo(function (userInfo) {
@@ -104,9 +112,6 @@ Page({
     })
     var dv = e.detail.value;
     var addressValue = e.target.dataset.address;
-    var myAmapFun = new amapFile.AMapWX({
-      key: 'ab3b9da6a118e991647e3b91606d6fba'
-    });
     myAmapFun.getInputtips({
       keywords: dv,
       location: '',
@@ -120,49 +125,27 @@ Page({
 
       }
     })
-    //计算地址距离
-    myAmapFun.getDrivingRoute({
-      origin: '116.481028,39.989643',
-      destination: '116.434446,39.90816',
-      success: function(data) {
-        var points = [];
-        if (data.paths && data.paths[0] && data.paths[0].steps) {
-          var steps = data.paths[0].steps;
-          for (var i = 0; i < steps.length; i++) {
-            var poLen = steps[i].polyline.split(';');
-            for (var j = 0; j < poLen.length; j++) {
-              points.push({
-                longitude: parseFloat(poLen[j].split(',')[0]),
-                latitude: parseFloat(poLen[j].split(',')[1])
-              })
-            }
-          }
-        }
-        if (data.paths[0] && data.paths[0].distance) {
-          that.setData({
-            distance: data.paths[0].distance + '米'
-          });
-          console.log(that.data.distance);
-        }
-
-      },
-      fail: function(info) {
-
-      }
-    })
   },
-  //获取地址信息
   bindSearch: function(e) {
+    var that = this;
+    //获取地址信息
     //console.log(e.target.dataset.location); 
+
     let parentid = e.target.dataset.parentid;
     let keywords = e.target.dataset.keywords;
+    var {
+      jsonLocationArray,
+      itemCount
+    } = this.data;
     //起始地
     if (parentid == 'sd') {
+      that.origin = e.target.dataset.location
       this.setData({
         keywordssd: keywords,
         displayValue: 'none'
-      })//目的地
+      }) //目的地
     } else if (parentid == 'ed') {
+      that.destination = e.target.dataset.location;
       this.setData({
         keywordsed: keywords,
         displayValue: 'none'
@@ -179,21 +162,88 @@ Page({
         itemCount
       } = this.data;
 
+      //动态添加的地址维度
+      var jsonLocationData = {
+        location: e.target.dataset.location,
+        parentid: e.target.dataset.parentid
+      };
+
+
       let isUpdate = false;
       for (let i = 0; i < jsonArray.length; i++) {
         if (jsonArray[i].parentid == jsonData.parentid) {
           jsonArray[i] = jsonData;
+          jsonLocationArray[i] = jsonLocationData;
           isUpdate = true;
         }
       }
       if (isUpdate == false) {
         jsonArray.push(jsonData);
+        jsonLocationArray.push(jsonLocationData);
       }
       this.setData({
         jsonArray: jsonArray,
         displayValue: 'none'
       })
     }
+    //计算地址距离
+    that.data.distance = 0;
+    var s;
+    var e;
+    if (jsonLocationArray.length == 0) {
+      that.calcDistance(that.origin, that.destination);
+    } else {
+      for (let i = 0; i < jsonLocationArray.length + 1; i++) {
+        if (i == 0) {
+          s = that.origin;
+          e = jsonLocationArray[i].location;
+        } else if (i == jsonLocationArray.length) {
+          s = jsonLocationArray[i - 1].location;
+          e = that.destination;
+        } else {
+          s = jsonLocationArray[i - 1].location;
+          e = jsonLocationArray[i].location;
+        }
+        that.calcDistance(s, e);
+      }
+    }
+  },
+  calcDistance: function(origin, destination) {
+    var that = this;
+    myAmapFun.getDrivingRoute({
+      origin: origin,
+      destination: destination,
+      success: function(data) {
+        var points = [];
+        if (data.paths && data.paths[0] && data.paths[0].steps) {
+          var steps = data.paths[0].steps;
+          for (var i = 0; i < steps.length; i++) {
+            var poLen = steps[i].polyline.split(';');
+            for (var j = 0; j < poLen.length; j++) {
+              points.push({
+                longitude: parseFloat(poLen[j].split(',')[0]),
+                latitude: parseFloat(poLen[j].split(',')[1])
+              })
+            }
+          }
+        }
+        if (data.paths[0] && data.paths[0].distance) {
+          let sumDistance = parseInt(that.data.distance*1000) + parseInt(data.paths[0].distance);
+          //向上取整,有小数就整数部分加1
+          let showDistance = Math.ceil(sumDistance / 1000);
+          that.setData({
+            distance: showDistance
+          });
+          console.log(that.data.distance);
+          //console.log(that.data.jsonLocationArray); 
+        }
+
+      },
+      fail: function(info) {
+
+      }
+    })
+
   },
   //百度
   // 绑定input输入 
@@ -300,7 +350,7 @@ Page({
     console.log(passingPlaceLists.length, '////////', itemCount)
   },
   //搬家下拉选择
-  bindChange: function (e) {
+  bindChange: function(e) {
     const val = e.detail.value
     this.setData({
       day: this.data.days[val[0]],
@@ -310,7 +360,7 @@ Page({
   },
 
   //订单备注字数限制
-  bindRemarkInput: function (e) {
+  bindRemarkInput: function(e) {
     var value = e.detail.value;
     var len = parseInt(value.length);
 
