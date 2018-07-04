@@ -2,10 +2,11 @@
 .radio-group{
   display: flex;
   flex: 1;
+  border-bottom: thin solid #666;
 }
 .radio-group .radio{
   padding: 25rpx;
-  border-right: 1rpx solid gray;
+  border-right: thin solid #666;
 }
 .radio-group .radio:last-child{
   border-right: none;

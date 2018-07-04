@@ -26,7 +26,7 @@
     <ul>
       <li>
         <view>
-          <icon type='info'></icon>
+          <text class='iconfont icon-dizhi'></text>
           <text>起始地</text>
         </view>
 
@@ -49,7 +49,7 @@
       </li>
       <li>
         <view>
-          <icon type='info'></icon>
+          <text class='iconfont icon-dizhi'></text>
           <text>目的地</text>
         </view>
 
@@ -76,7 +76,7 @@
     <view class="passingPlace">
       <block wx:for="{{passingPlaceLists}}" wx:for-item="item" wx:key="id">
         <view>
-          <icon type='info'></icon>
+          <text class='iconfont icon-dizhi'></text>
           <text>途经点</text>
         </view>
 
@@ -101,13 +101,13 @@
       </block>
     </view>
     <button bindtap='addPassingPlace'>
-      <icon type='info'></icon>
+      <text class='iconfont icon-jiahao'></text>
       还有途径点~
     </button>
 
     <view class="movingTime">
       <view class="moveTimeTitle">
-        <icon type='info'></icon>
+        <text class='iconfont icon-icon-shijian'></text>
         <text>搬家时间</text>
       </view>
 
@@ -130,7 +130,7 @@
 
     <view class="contacts">
       <view class="contactsTitle">
-        <icon type='info'></icon>
+        <text class='iconfont icon-yonghu'></text>
         <text>联系人</text>
       </view>
       <input bindinput="bindContactsInput" focus="true" value='{{name}}' placeholder="请输入联系人姓名" />
@@ -138,7 +138,7 @@
 
     <view class="phone">
       <view class="phoneTitle">
-        <icon type='info'></icon>
+        <text class='iconfont icon-icondianhua'></text>
         <text>联系电话</text>
       </view>
       <input bindinput="bindPhoneInput" focus="true" value='{{phoneNum}}' type="number" placeholder="请输入联系电话" maxlength="11" />
@@ -146,7 +146,7 @@
 
     <view class="personNum">
       <view class="personNumTitle">
-        <icon type='info'></icon>
+        <text class='iconfont icon-kehu'></text>
         <text>搬家师傅</text>
       </view>
       <input bindinput="bindPersonNumInput" focus="true" value='{{personNum}}' placeholder="请输入搬家师傅人数，默认1人" />
@@ -154,7 +154,7 @@
 
     <view class="remark">
       <view class="remarkTitle">
-        <icon type='info'></icon>
+        <text class='iconfont icon-beizhu'></text>
         <text>订单备注</text>
       </view>
       <textarea class="remarkInfo" placeholder='请输入备注信息' maxlength="{{max}}" bindinput="bindRemarkInput" maxlength="200">
