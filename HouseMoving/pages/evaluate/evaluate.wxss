@@ -1,1 +1,58 @@
 /* pages/evaluate/evaluate.wxss */
+.info-cont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.head {
+  font-size: 46rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 40rpx 0;
+  background: #c0e0ff;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 0 20rpx;
+  border-radius: 50%;
+}
+
+.infoMain {
+  /* display: none; */
+  width: 100%;
+  margin: 0 auto;
+}
+
+.item {
+  position: relative;
+  border-bottom: 20rpx solid #eee;
+  line-height: 50rpx;
+  overflow: hidden;
+  padding: 0 20rpx;
+}
+
+.inner.txt {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.itemInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+}
+.itemInfo .userName{
+  padding: 14rpx 0;
+}
+.itemInfo .itemText{
+  padding-bottom: 14rpx;
+}

@@ -12,10 +12,12 @@ var myAmapFun = new amapFile.AMapWX({
   key: 'ab3b9da6a118e991647e3b91606d6fba'
 });
 
+const db = wx.cloud.database()
+
 const date = new Date()
-const days = []
-const hours = []
-const minutes = []
+const days = ['电梯-免费', '1楼-免费', '2楼-加收20元']
+const hours = ['电梯-免费', '1楼-免费', '2楼-加收20元']
+const minutes = ['电梯-免费', '1楼-免费', '2楼-加收20元']
 let time = util.formatTime(new Date())
 
 // for (let i = 0; i <= 365; i++) {
@@ -79,14 +81,15 @@ Page({
     //途经点
     passingPlaceLists: [],
     itemCount: 0,
-    month: '',
-    day: '',
-    hour: '',
-    minute: '',
+    year: '2018',
+    month: '10',
+    day: '7',
+    hour: '10',
+    minute: '30',
     days: days,
     hours: hours,
     minutes: minutes,
-    value: [9999, 1, 1],
+    value: '服务时间',
 
     distance: 0,
     price: 0

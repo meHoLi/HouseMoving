@@ -1,1 +1,100 @@
 /* pages/discount/discount.wxss */
+
+.info-cont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #f8f8f8;
+}
+
+.head {
+  font-size: 46rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 40rpx 0;
+  background: #c0e0ff;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 0 20rpx;
+  border-radius: 50%;
+}
+
+.infoMain {
+  /* display: none; */
+  width: 100%;
+  padding-top: 40rpx;
+  margin: 0 auto;
+}
+
+.item {
+  border-bottom: 20rpx solid #f8f8f8;
+  line-height: 50rpx;
+  overflow: hidden;
+  padding: 0 20rpx;
+}
+
+.inner.txt {
+  position: relative;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 20rpx 20rpx 0 20rpx;
+  border-radius: 4rpx;
+  border-top: 10rpx solid deeppink;
+  border-bottom: 2rpx solid #d7d7d7;
+}
+
+.inner.txt image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150rpx;
+  height: 150rpx;
+}
+
+.itemInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+}
+
+.itemInfo .itemInfo-top {
+  height: 140rpx;
+  line-height: 140rpx;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-around;
+  border-bottom: 2rpx dashed #d7d7d7;
+}
+
+.amount {
+  font-size: 58rpx;
+}
+
+.unit {
+  font-size: 36rpx;
+  padding-left: 6rpx;
+}
+
+.itemInfo-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 10rpx 0;
+}
+
+.usedItem {
+  color: #d7d7d7;
+}
+
+.usedItem .inner.txt {
+  border-top: 10rpx solid #d7d7d7;
+}

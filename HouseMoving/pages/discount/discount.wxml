@@ -1,2 +1,38 @@
 <!--pages/discount/discount.wxml-->
-<text>pages/discount/discount.wxml</text>
+<view class="container">
+  <view class="info-cont">
+
+    <view class='info'>
+      <!-- <view class="head">
+        <image class="userinfo-avatar" src="../../img/head.png" background-size="cover"></image>
+        <text class="userinfo-nickname">昵称</text>
+      </view> -->
+
+      <view class="infoMain">
+        <view wx:for="{{list}}" wx:key="{{index}}" class="item '{{'item'+index}}' '{{item.isUsed?'usedItem':''}}'">
+          <view class="inner txt">
+            <image style="display:{{item.isUsed?'block':'none'}};" src="../../img/isUsed.png"></image>
+            <view class="itemInfo">
+              <view class='itemInfo-top'>
+                <view class='amountBody'>
+                  <text class='amount'>{{item.amount}}</text>
+                  <text class='unit'>元</text>
+                </view>
+                <view class='conditionBody'>
+                  <text class='condition'>{{item.condition}}</text>
+                </view>
+              </view>
+              <view class='itemInfo-bottom'>
+                <text class='deadline'>有效期至：{{item.deadline}}</text>
+                <text style="display:{{item.isUsed?'none':'block'}};">立即使用</text>
+              </view>
+            </view>
+
+          </view>
+        </view>
+
+      </view>
+    </view>
+
+  </view>
+</view>

@@ -15,24 +15,24 @@
       </view>
       <button class="btn" bindtap="openCarExplain"> 车型说明 </button>
     </view>
-    <view class="row-wrap">
+    <!-- <view class="row-wrap">
       <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
         <view>
           <text>{{casArray[casIndex]}}</text>
         </view>
       </picker>
-    </view>
+    </view> -->
 
     <ul>
-      <li>
-        <view>
+      <li class="liItem">
+        <view class='title'>
           <text class='iconfont icon-dizhi'></text>
           <text>起始地</text>
         </view>
 
         <view class="mapSeach">
           <view class="section">
-            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address='sd' value='{{ keywordssd}}' />
+            <input bindinput="bindInput" placeholder="请输入起始地" focus="true" data-address='sd' value='{{ keywordssd}}' />
           </view>
           <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='sd'}}" data-parentid="{{'sd'}}">
             {{i.name}}
@@ -45,18 +45,18 @@
               <text>{{casArray[casIndex]}}</text>
             </view>
           </picker>
+          <image src="../../img/next.png"></image>
         </view>
       </li>
-      <li>
-        <view>
+      <li class="liItem">
+        <view class='title'>
           <text class='iconfont icon-dizhi'></text>
           <text>目的地</text>
         </view>
 
-
         <view class="mapSeach">
           <view class="section">
-            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address='ed' value='{{ keywordsed}}' />
+            <input bindinput="bindInput" placeholder="请输入目的地" focus="true" data-address='ed' value='{{ keywordsed}}' />
           </view>
           <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='ed'}}" data-parentid="{{'ed'}}">
             {{i.name}}
@@ -64,25 +64,26 @@
         </view>
 
         <view class="row-wrap">
-          <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
+          <picker bindchange="bindCasPickerChange" value="{{casIndex2}}" range="{{casArray}}">
             <view>
               <text>{{casArray[casIndex]}}</text>
             </view>
           </picker>
+          <image src="../../img/next.png"></image>
         </view>
       </li>
     </ul>
 
     <view class="passingPlace">
-      <block wx:for="{{passingPlaceLists}}" wx:for-item="item" wx:key="id">
-        <view>
+      <view wx:for="{{passingPlaceLists}}" wx:for-item="item" wx:key="id" class='passingPlaceItem'>
+        <view class='title'>
           <text class='iconfont icon-dizhi'></text>
           <text>途经点</text>
         </view>
-
+ 
         <view class="mapSeach">
           <view class="section">
-            <input bindinput="bindInput" placeholder="搜索" focus="true" data-address="{{index}}" value='{{ jsonArray[index].keywords}}' />
+            <input bindinput="bindInput" placeholder="请输入途经点信息" focus="true" data-address="{{index}}" value='{{ jsonArray[index].keywords}}' />
           </view>
           <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue==item.id}}" data-parentid="{{item.id}}" data-index="{{index}}">
             {{i.name}}
@@ -95,26 +96,26 @@
               <text>{{casArray[casIndex]}}</text>
             </view>
           </picker>
+          <image src="../../img/next.png"></image>
         </view>
 
         <icon type='cancel' bindtap='delPassingPlace' data-index="{{index}}"></icon>
-      </block>
+      </view>
     </view>
-    <button bindtap='addPassingPlace'>
+    <button bindtap='addPassingPlace' class='wayToBtn'>
       <text class='iconfont icon-jiahao'></text>
       还有途径点~
     </button>
 
     <view class="movingTime">
-      <view class="moveTimeTitle">
+      <view class="moveTimeTitle title">
         <text class='iconfont icon-icon-shijian'></text>
         <text>搬家时间</text>
       </view>
 
       <view>
-        <!-- <view>{{item.month}}月{{item.day}}日 {{hour}}:{{minute}}</view> -->
-        <view>服务时间</view>
-        <picker-view indicator-style="height: 50px;" style="width: 100%; height: 300px;" value="{{value}}" bindchange="bindChange">
+        <view>{{year}}年{{month}}月{{day}}日 {{hour}}:{{minute}}</view>
+        <!-- <picker-view indicator-style="height: 50px;" style="width: 100%; height: 300px;" value="{{value}}" bindchange="bindChange">
           <picker-view-column>
             <view wx:for="{{days}}" style="line-height: 50px">{{item.month}}月{{item.day}}日</view>
           </picker-view-column>
@@ -124,12 +125,12 @@
           <picker-view-column>
             <view wx:for="{{minutes}}" style="line-height: 50px">{{item}}</view>
           </picker-view-column>
-        </picker-view>
+        </picker-view> -->
       </view>
     </view>
 
-    <view class="contacts">
-      <view class="contactsTitle">
+    <view class="contacts"> 
+      <view class="contactsTitle title">
         <text class='iconfont icon-yonghu'></text>
         <text>联系人</text>
       </view>
@@ -137,7 +138,7 @@
     </view>
 
     <view class="phone">
-      <view class="phoneTitle">
+      <view class="phoneTitle title">
         <text class='iconfont icon-icondianhua'></text>
         <text>联系电话</text>
       </view>
@@ -145,7 +146,7 @@
     </view>
 
     <view class="personNum">
-      <view class="personNumTitle">
+      <view class="personNumTitle title">
         <text class='iconfont icon-kehu'></text>
         <text>搬家师傅</text>
       </view>
@@ -153,7 +154,7 @@
     </view>
 
     <view class="remark">
-      <view class="remarkTitle">
+      <view class="remarkTitle title">
         <text class='iconfont icon-beizhu'></text>
         <text>订单备注</text>
       </view>

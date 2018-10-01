@@ -1,2 +1,64 @@
 <!--pages/orders/orders.wxml-->
-<text>pages/orders/orders.wxml</text>
+<view class="container">
+  <view class="info-cont">
+
+    <view class='info'>
+      <!-- <view class="head">
+        <image class="userinfo-avatar" src="../../img/head.png" background-size="cover"></image>
+        <text class="userinfo-nickname">昵称</text>
+      </view> -->
+
+      <view class="infoMain">
+        <view wx:for="{{list}}" wx:key="{{index}}" class="item '{{'item'+index}}'">
+
+          <view class="inner txt">
+            <view class="itemInfo">
+              <text class='title'>服务时间：</text>
+              <view class='itemText'>{{item.time}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>起始地：</text>
+              <view class='itemText'>{{item.startingPlace}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>目的地：</text>
+              <view class='itemText'>{{item.endPlace}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>金额：</text>
+              <view class='itemText'>{{item.money}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>路程：</text>
+              <view class='itemText'>{{item.distance}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>车型：</text>
+              <view class='itemText'>{{item.carType}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>搬家师傅：</text>
+              <view class='itemText'>{{item.workerNum}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>联系人：</text>
+              <view class='itemText'>{{item.contacts}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>电话：</text>
+              <view class='itemText'>{{item.phone}}</view>
+            </view>
+
+            <view class='editBtn'>
+              <button bindtap="cancel" class="cancelBtn">取消订单</button>
+              <button bindtap="payFor" class="payForBtn">待支付</button>
+              <button bindtap="evaluate" class="evaluateBtn">待评价</button>
+            </view>
+          </view>
+        </view>
+
+      </view>
+    </view>
+
+  </view>
+</view>

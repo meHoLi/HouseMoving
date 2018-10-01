@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/main/main",
     "pages/index/index",
+    "pages/main/main",
     "pages/highGradeMove/highGradeMove",
     "pages/orders/orders",
     "pages/evaluate/evaluate",
@@ -9,24 +9,31 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#000",
     "navigationBarTitleText": "我的小程序",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "white"
   },
   "tabBar": {
+    "color": "#9e9e9e",
     "borderStyle": "white",
-    "selectedColor": "#54cbf0",
+    "selectedColor": "#000",
     "list": [
       {
         "pagePath": "pages/index/index",
+        "iconPath": "/img/movingGray1.png",
+        "selectedIconPath": "/img/movingBlack1.png",
         "text": "普通搬家"
       },
       {
         "pagePath": "pages/highGradeMove/highGradeMove",
+        "iconPath": "/img/movingGray2.png",
+        "selectedIconPath": "/img/movingBlack2.png",
         "text": "日式搬家"
       },
       {
         "pagePath": "pages/main/main",
+        "iconPath": "/img/personalCenterGary.png",
+        "selectedIconPath": "/img/personalCenterBlack.png",
         "text": "个人中心"
       }
     ]
