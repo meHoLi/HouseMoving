@@ -11,10 +11,10 @@
       <view class="infoMain">
         <view wx:for="{{list}}" wx:key="{{index}}" class="item '{{'item'+index}}'">
 
-          <view bindtap='editInfo' data-index="{{index}}" class="inner txt">
-            <text class="item-text" data-index="{{index}}">{{item.txt}}</text>
+          <view bindtap='editInfo' data-index="{{index}}" data-item="{{item}}" class="inner txt">
+            <text class="item-text" data-index="{{index}}" data-item="{{item}}">{{item.txt}}</text>
 
-            <view data-index="{{index}}" class="item-edit">
+            <view data-index="{{index}}" data-item="{{item}}" class="item-edit">
               <image mode="widthFix" src="../../img/next.png"></image>
             </view>
           </view>

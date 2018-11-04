@@ -1,4 +1,5 @@
 // pages/evaluate/evaluate.js
+const app = getApp()
 var util = require('../../utils/util.js');
 var myDate = new Date();//获取系统当前时间
 var currentDate = myDate.toLocaleDateString(); //获取当前日期
@@ -17,24 +18,49 @@ Page({
 
   },
 
-  tempData: function () {
-    var list = [
-      {
-        userName: '驾驶的快捷键',
-        evaluate: '大事记卡喝咖啡季后赛的咖啡机螺蛳粉'
+  tempData: function () {debugger
+    // var list = [
+    //   {
+    //     userName: '小明',
+    //     evaluate: '大事记卡喝咖啡季后赛的咖啡机螺蛳粉'
+    //   },
+    // ];
+    // this.setData({
+    //   list: list
+    // });
+
+    let that = this;
+
+    wx.request({
+      url: app.globalData.url + '/Comment/Index', //仅为示例，并非真实的接口地址
+      data: {
+        openID: app.globalData.openID
       },
-      {
-        userName: '驾驶的快捷键',
-        evaluate: '撒不记得快解放啦开始的拉开健身房和卢卡斯积分落户是返回雷克萨返回萨克的技能卡夫卡设计费链接的'
+      header: {
+        'content-type': 'application/json' // 默认值
       },
-      {
-        userName: '驾驶的快捷键',
-        evaluate: '撒谎购房客户的刷卡房间很深刻的电视剧附近开始的粉红色快递费开发商将打开附件是分开的设计费花露水的空间发生了款到发货'
+      success: function (res) {
+
+        console.log(res)
+        let list = res.data.Data
+
+        if (!!list[0]) {
+          that.setData({
+            noClassDis: 'none',
+            haveClassDis: 'block',
+            list: list
+          });
+        } else {
+          that.setData({
+            noClassDis: 'block',
+            haveClassDis: 'none',
+            list: list
+          });
+        }
       }
-    ];
-    this.setData({
-      list: list
-    });
+    })
+
+
   },
 
 })

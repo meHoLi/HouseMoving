@@ -1,4 +1,4 @@
-<!--pages/orders/orders.wxml-->
+<!--pages/clientOrders/clientOrders.wxml-->
 <view class="container">
   <view class="info-cont">
 
@@ -55,14 +55,14 @@
 
             <view class='editBtn'>
               <view class='left' style='display:{{item.PayState === "-1" ? "block" : "none"}}'>订单已取消</view>
-              <view class='left' style='display:{{item.PayState === "1" ? "block" : "none"}}'>订单已完成</view>
+              <view class='left' style='display:{{item.PayState === "1" ? "block" : "none"}}'>订单已付款</view>
               <view class='left' style='display:{{item.PayState === "2" ? "block" : "none"}}'>订单已退款</view>
-              <view class='right'>
+              <!-- <view class='right'>
                 <button bindtap="cancel" class="cancelBtn" data-item='{{item}}' style='display:{{item.PayState === "0" ? "block" : "none"}}'>取消订单</button>
-              <button bindtap="payFor" class="payForBtn" data-item='{{item}}' style='display:{{item.PayState === "0" ? "block" : "none"}}'>待支付</button>
-              <button bindtap="refund" class="evaluateBtn" data-item='{{item}}' style='display:{{item.PayState === "1" ? "block" : "none"}}'>退款</button>
-              <button bindtap="evaluate" class="evaluateBtn" data-item='{{item}}' style='display:{{item.PayState === "1" ? "block" : "none"}}'>评价</button>
-              </view>
+                <button bindtap="payFor" class="payForBtn" data-item='{{item}}' style='display:{{item.PayState === "0" ? "block" : "none"}}'>待支付</button>
+                <button bindtap="refund" class="evaluateBtn" data-item='{{item}}' style='display:{{item.PayState === "1" ? "block" : "none"}}'>退款</button>
+                <button bindtap="evaluate" class="evaluateBtn" data-item='{{item}}' style='display:{{item.PayState === "1" ? "block" : "none"}}'>评价</button>
+              </view> -->
             </view>
           </view>
         </view>

@@ -1,1 +1,191 @@
 /* pages/highGradeMove/highGradeMove.wxss */
+.radio-group{
+  display: flex;
+  flex: 1;
+  /* flex-wrap: wrap; */
+  border-bottom: 2rpx solid #666;
+}
+.radio-group .radio{
+  display:flex;
+  flex-grow:1;
+  justify-content: center;
+  font-size: 36rpx;
+  padding: 25rpx 0;
+  border-right: 2rpx solid #666;
+}
+.radio-group .radio:last-child{
+  border-right: none;
+}
+.radio-group .radio radio .wx-radio-input {
+  width:30rpx;
+  height:30rpx;
+}
+.radio-group radio .wx-radio-input.wx-radio-input-checked{
+  font-size:30rpx;
+}
+
+.carExplain{
+  display: flex;
+  flex-direction: row; 
+  font-size: 24rpx;
+  line-height: 40rpx;
+  padding: 8rpx 16rpx;
+}
+.carExplain-left{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 65%;
+}
+.carExplain-left-top, .carExplain-left-bottom{
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn{
+  font-size: 36rpx;
+}
+.mapSeach{
+  position:relative;
+}
+.section{
+  font-size:28rpx;
+}
+.mapSelect{
+  width: calc(100% - 4rpx);
+  position:absolute;
+  background:#fff;
+  z-index:4;
+  top:56rpx;
+  border-left:2rpx solid #c3c3c3;
+  border-right:2rpx solid #c3c3c3;
+  /* border-radius: 6rpx; */
+}
+
+/*高德*/
+.section input{
+  border:2rpx solid #c3c3c3;
+  border-radius: 6rpx;
+  padding: 0 10rpx;
+}
+.text_box{
+  padding: 20rpx;
+  margin: 0 10rpx;
+  border-bottom:1px solid #c3c3c3;
+}
+
+/*  */
+.liItem{
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding:10rpx;
+}
+.title{
+  width:160rpx;
+  display: flex;
+  align-items: center;
+  padding-right: 20rpx;
+}
+.title .iconfont{
+  margin-right: 10rpx;
+}
+
+.mapSeach{
+  display: flex;
+  flex-flow: 1;
+}
+.row-wrap{
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-left: 20rpx;
+}
+.row-wrap image{
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 10rpx;
+}
+/* 还有途经点按钮 */
+.wayToBtn{
+  display:flex;
+  align-items:center;
+  width: 240rpx;
+  height: 60rpx;
+  font-size: 24rpx;
+  background: #fff;
+}
+.icon-jiahao{
+  margin-right: 10rpx;
+}
+
+.passingPlace .passingPlaceItem{
+  display: flex;
+  flex: 1;
+  align-items:center;
+  padding:10rpx;
+}
+
+.movingTime, .contacts, .phone, .personNum, .saleCode, .remark{
+  display:flex;
+  flex:1;
+  align-items:center;
+  padding:10rpx;
+}
+
+.movingTime input, .contacts input, .phone input, .personNum input, .saleCode input, .remark input{
+  width: 600rpx;
+  border:1px solid #c3c3c3;
+  border-radius: 3px;
+  padding: 0 5px;
+}
+
+/* 订单备注信息 */
+.remarkInfo{
+  height:152rpx;
+  font-size: 30rpx;
+  text-indent: 28rpx;
+  border: 1rpx solid gainsboro;
+  padding-top: 30rpx;
+  margin: 0 auto;
+  overflow: hidden;   
+  position: relative; 
+}
+.currentRemarkInfo{
+  font-size: 28rpx;
+  color: gray;
+  position: absolute;
+  right: 25rpx;
+  bottom: 25rpx;
+}
+/* 提示 */
+.tips{
+  padding:10rpx;
+}
+
+/* 里程、价钱 */
+.distance{
+  font-size: 36rpx;
+  text-align: center;
+}
+.distance text{
+  color: #ff7e00;
+  padding:0 10rpx;
+}
+.distance text:nth-child(1){
+  font-style: italic;
+  font-size: 44rpx;
+}
+.distance text:nth-child(2){
+  font-size: 64rpx;
+}
+
+.orderBtnBody{
+  padding: 20rpx;
+}
+.orderBtn{
+  background: #04be01;
+  color: #fff;
+}

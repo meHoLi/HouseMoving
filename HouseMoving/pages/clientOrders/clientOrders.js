@@ -1,4 +1,4 @@
-// pages/orders/orders.js
+// pages/clientOrders/clientOrders.js
 const app = getApp()
 var util = require('../../utils/util.js');
 var myDate = new Date();//获取系统当前时间
@@ -61,9 +61,8 @@ Page({
     let that = this;
 
     wx.request({
-      url: app.globalData.url + '/Order/Index', //仅为示例，并非真实的接口地址
+      url: app.globalData.url + '/Order/GetOrderList', //仅为示例，并非真实的接口地址
       data: {
-        openID: app.globalData.openID,
         startTime: '1979-01-01 00:00:00',
         endTime: '2050-01-01 00:00:00'
       },
@@ -71,8 +70,6 @@ Page({
         'content-type': 'application/json' // 默认值
       },
       success: function (res) {
-
-        console.log(res)
         let list = res.data.Data
 
         if (!!list[0]) {
@@ -239,7 +236,7 @@ Page({
   },
 
   //确认评价
-  confirm: function () {debugger
+  confirm: function () {
     let evaluate = this.data.evaluate,
       item = this.data.item,
       that = this;
@@ -258,7 +255,7 @@ Page({
           OrderID: item.ID,
           OpenID: app.globalData.openID,
           Content: evaluate,
-          NickName: item.Name
+          NickName: '1111'
         },
         header: {
           'content-type': 'application/json' // 默认值

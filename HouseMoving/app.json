@@ -5,7 +5,9 @@
     "pages/highGradeMove/highGradeMove",
     "pages/orders/orders",
     "pages/evaluate/evaluate",
-    "pages/discount/discount"
+    "pages/discount/discount",
+    "pages/clientOrders/clientOrders",
+    "pages/carTypeManagement/carTypeManagement"
   ],
   "window": {
     "backgroundTextStyle": "light",

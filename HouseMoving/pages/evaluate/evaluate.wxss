@@ -54,5 +54,7 @@
   padding: 14rpx 0;
 }
 .itemInfo .itemText{
+  line-height: 40rpx;
+  word-break:break-all;
   padding-bottom: 14rpx;
 }

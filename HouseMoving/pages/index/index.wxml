@@ -3,7 +3,7 @@
   <scroll-view scroll-y="true" enable-back-to-top="true">
     <view class="tabs">
       <radio-group class="radio-group" bindchange="radioChange">
-        <label class="radio" wx:for="{{items}}">
+        <label class="radio" wx:for="{{carList}}">
           <radio value="{{item.value}}" checked="{{item.checked}}" />{{item.name}}
         </label>
       </radio-group>
@@ -13,16 +13,9 @@
         <text class="carExplain-left-top">{{carExplainTop}}</text>
         <text class="carExplain-left-bottom">{{carExplainBottom}}</text>
       </view>
-      <button class="btn" bindtap="openCarExplain"> 车型说明 </button>
+      <!-- <button class="btn" bindtap="openCarExplain"> 车型说明 </button> -->
     </view>
-    <!-- <view class="row-wrap">
-      <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
-        <view>
-          <text>{{casArray[casIndex]}}</text>
-        </view>
-      </picker>
-    </view> -->
-
+    
     <ul>
       <li class="liItem">
         <view class='title'>
@@ -34,15 +27,18 @@
           <view class="section">
             <input bindinput="bindInput" placeholder="请输入起始地" focus="true" data-address='sd' value='{{ keywordssd}}' />
           </view>
-          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='sd'}}" data-parentid="{{'sd'}}">
-            {{i.name}}
+          <view class="mapSelect">
+            <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='sd'}}" data-parentid="{{'sd'}}">
+              {{i.name}}
+            </view>
           </view>
+          
         </view>
 
         <view class="row-wrap">
-          <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
+          <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}" range-key="name" data-flag='start'>
             <view>
-              <text>{{casArray[casIndex]}}</text>
+              <text>{{casArray[casIndex1].name}}</text>
             </view>
           </picker>
           <image src="../../img/next.png"></image>
@@ -58,15 +54,17 @@
           <view class="section">
             <input bindinput="bindInput" placeholder="请输入目的地" focus="true" data-address='ed' value='{{ keywordsed}}' />
           </view>
-          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='ed'}}" data-parentid="{{'ed'}}">
-            {{i.name}}
+          <view class="mapSelect">
+            <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue=='ed'}}" data-parentid="{{'ed'}}">
+              {{i.name}}
+            </view>
           </view>
         </view>
 
         <view class="row-wrap">
-          <picker bindchange="bindCasPickerChange" value="{{casIndex2}}" range="{{casArray}}">
+          <picker bindchange="bindCasPickerChange" value="{{casIndex2}}" range="{{casArray}}" range-key="name" data-flag='end'>
             <view>
-              <text>{{casArray[casIndex]}}</text>
+              <text>{{casArray[casIndex2].name}}</text>
             </view>
           </picker>
           <image src="../../img/next.png"></image>
@@ -75,7 +73,7 @@
     </ul>
 
     <view class="passingPlace">
-      <view wx:for="{{passingPlaceLists}}" wx:for-item="item" wx:key="id" class='passingPlaceItem'>
+      <view wx:for="{{jsonArray}}" wx:for-item="item" wx:key="id" class='passingPlaceItem'>
         <view class='title'>
           <text class='iconfont icon-dizhi'></text>
           <text>途经点</text>
@@ -85,15 +83,17 @@
           <view class="section">
             <input bindinput="bindInput" placeholder="请输入途经点信息" focus="true" data-address="{{index}}" value='{{ jsonArray[index].keywords}}' />
           </view>
-          <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue==item.id}}" data-parentid="{{item.id}}" data-index="{{index}}">
-            {{i.name}}
+          <view class="mapSelect">
+            <view bindtouchstart="bindSearch" data-keywords="{{i.name}}" data-location='{{i.location}}' style='display:{{displayValue}}' class="text_box" wx:for="{{tips}}" wx:for-item="i" wx:if="{{addressValue==item.id}}" data-parentid="{{item.id}}" data-index="{{index}}">
+              {{i.name}}
+            </view>
           </view>
         </view>
 
         <view class="row-wrap">
-          <picker bindchange="bindCasPickerChange" value="{{casIndex1}}" range="{{casArray}}">
+          <picker bindchange="bindCasPickerChange" value="{{item.casIndex}}" range="{{casArray}}" range-key="name" data-flag='passing' data-item='{{item}}' data-index='{{index}}'>
             <view>
-              <text>{{casArray[casIndex]}}</text>
+              <text>{{casArray[item.casIndex].name}}</text>
             </view>
           </picker>
           <image src="../../img/next.png"></image>
@@ -114,18 +114,11 @@
       </view>
 
       <view>
-        <view>{{year}}年{{month}}月{{day}}日 {{hour}}:{{minute}}</view>
-        <!-- <picker-view indicator-style="height: 50px;" style="width: 100%; height: 300px;" value="{{value}}" bindchange="bindChange">
-          <picker-view-column>
-            <view wx:for="{{days}}" style="line-height: 50px">{{item.month}}月{{item.day}}日</view>
-          </picker-view-column>
-          <picker-view-column>
-            <view wx:for="{{hours}}" style="line-height: 50px">{{item}}</view>
-          </picker-view-column>
-          <picker-view-column>
-            <view wx:for="{{minutes}}" style="line-height: 50px">{{item}}</view>
-          </picker-view-column>
-        </picker-view> -->
+        <picker mode="multiSelector" value="{{dateTime}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}">
+          <view class="tui-picker-detail">
+            {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+          </view>
+        </picker>
       </view>
     </view>
 
@@ -153,12 +146,20 @@
       <input bindinput="bindPersonNumInput" focus="true" value='{{personNum}}' placeholder="请输入搬家师傅人数，默认1人" />
     </view>
 
+    <view class="saleCode">
+      <view class="saleCodeTitle title">
+        <text class='iconfont icon-beizhu'></text>
+        <text>优惠码</text>
+      </view>
+      <input bindinput="bindSaleCodeInput" focus="true" value='{{saleCode}}' placeholder="请输入优惠码" />
+    </view>
+
     <view class="remark">
       <view class="remarkTitle title">
         <text class='iconfont icon-beizhu'></text>
         <text>订单备注</text>
       </view>
-      <textarea class="remarkInfo" placeholder='请输入备注信息' maxlength="{{max}}" bindinput="bindRemarkInput" maxlength="200">
+      <textarea class="remarkInfo" placeholder='请输入备注信息' maxlength="{{max}}" bindinput="bindRemarkInput" maxlength="200" value='{{remark}}'>
         <text class="currentRemarkInfo">{{currentRemarkInfoLen|0}}/200</text>
       </textarea>
     </view>

@@ -13,8 +13,8 @@
 
           <view class="inner txt">
             <view class="itemInfo">
-              <text class='userName'>{{item.userName}}</text>
-              <view class='itemText'>{{item.evaluate}}</view>
+              <text class='userName'>{{item.NickName}}</text>
+              <view class='itemText'>{{item.Content}}</view>
             </view>
 
           </view>

@@ -20,13 +20,24 @@ Page({
   tempData: function () {
     var list = [
       {
-        txt: "历史订单"
+        txt: "历史订单",
+        flag: 'orders'
       },
       {
-        txt: "用户评价"
+        txt: "用户评价",
+        flag: 'evaluate'
+      },
+      // {
+      //   txt: "优惠券",
+      //   flag: "discount"
+      // },
+      {
+        txt: "客户订单",
+        flag: 'clientOrders'
       },
       {
-        txt: "优惠券"
+        txt: "车型管理",
+        flag: 'carTypeManagement'
       }
     ];
     this.setData({
@@ -35,8 +46,8 @@ Page({
   },
 
   editInfo: function (e) {
-    let index = e.currentTarget.dataset.index,
-      name = index == 0 ? 'orders' : (index == 1 ? 'evaluate' : 'discount')
+    let item = e.currentTarget.dataset.item,
+      name = item.flag;
     
     wx.navigateTo({
       url: '../' + name + '/' + name

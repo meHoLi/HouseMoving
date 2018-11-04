@@ -26,8 +26,9 @@
 .carExplain{
   display: flex;
   flex-direction: row; 
-  font-size: 30rpx;
-  padding: 16rpx;
+  font-size: 24rpx;
+  line-height: 40rpx;
+  padding: 8rpx 16rpx;
 }
 .carExplain-left{
   display: flex;
@@ -45,20 +46,33 @@
 .btn{
   font-size: 36rpx;
 }
+.mapSeach{
+  position:relative;
+}
 .section{
   font-size:28rpx;
+}
+.mapSelect{
+  width: calc(100% - 4rpx);
+  position:absolute;
+  background:#fff;
+  z-index:4;
+  top:56rpx;
+  border-left:2rpx solid #c3c3c3;
+  border-right:2rpx solid #c3c3c3;
+  /* border-radius: 6rpx; */
 }
 
 /*高德*/
 .section input{
-  border:1px solid #c3c3c3;
-  border-radius: 3px;
-  padding: 0 5px;
+  border:2rpx solid #c3c3c3;
+  border-radius: 6rpx;
+  padding: 0 10rpx;
 }
 .text_box{
-  margin: 10px 25px;
+  padding: 20rpx;
+  margin: 0 10rpx;
   border-bottom:1px solid #c3c3c3;
-  padding-bottom:10px
 }
 
 /*  */
@@ -113,14 +127,14 @@
   padding:10rpx;
 }
 
-.movingTime, .contacts, .phone, .personNum, .remark{
+.movingTime, .contacts, .phone, .personNum, .saleCode, .remark{
   display:flex;
   flex:1;
   align-items:center;
   padding:10rpx;
 }
 
-.movingTime input, .contacts input, .phone input, .personNum input, .remark input{
+.movingTime input, .contacts input, .phone input, .personNum input, .saleCode input, .remark input{
   width: 600rpx;
   border:1px solid #c3c3c3;
   border-radius: 3px;
@@ -144,4 +158,33 @@
   position: absolute;
   right: 25rpx;
   bottom: 25rpx;
+}
+/* 提示 */
+.tips{
+  padding:10rpx;
+}
+
+/* 里程、价钱 */
+.distance{
+  font-size: 36rpx;
+  text-align: center;
+}
+.distance text{
+  color: #ff7e00;
+  padding:0 10rpx;
+}
+.distance text:nth-child(1){
+  font-style: italic;
+  font-size: 44rpx;
+}
+.distance text:nth-child(2){
+  font-size: 64rpx;
+}
+
+.orderBtnBody{
+  padding: 20rpx;
+}
+.orderBtn{
+  background: #04be01;
+  color: #fff;
 }
