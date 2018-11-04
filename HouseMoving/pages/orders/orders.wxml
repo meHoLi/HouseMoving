@@ -72,7 +72,7 @@
 
   </view>
 
-  <modal title="评价" hidden="{{hiddenmodalput}}" cancel-text="取消" confirm-text="确定" bindconfirm="confirm" bindcancel="cancel">
+  <modal title="评价" hidden="{{hiddenmodalput}}" cancel-text="取消" confirm-text="确定" bindconfirm="confirm" bindcancel="cancelModal">
     <view class="modal">
       <textarea class="evaluate" placeholder='请输入评价信息' maxlength="{{max}}" bindinput="bindEvaluateInput" maxlength="200" value='{{evaluate}}'>
         <text class="currentEvaluateInfo">{{currentEvaluateInfoLen|0}}/200</text>

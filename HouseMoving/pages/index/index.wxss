@@ -141,6 +141,10 @@
   padding: 0 5px;
 }
 
+.movingTime .placeholder{
+  color: #808080;
+}
+
 /* 订单备注信息 */
 .remarkInfo{
   height:152rpx;
@@ -187,4 +191,9 @@
 .orderBtn{
   background: #04be01;
   color: #fff;
+}
+
+.modal{
+  line-height:60rpx;
+  padding: 20rpx;
 }

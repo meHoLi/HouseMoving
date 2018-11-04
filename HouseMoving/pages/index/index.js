@@ -16,17 +16,6 @@ var myAmapFun = new amapFile.AMapWX({
   key: 'ab3b9da6a118e991647e3b91606d6fba'
 });
 
-const casArray = [
-  { name: '电梯-免费', money: 0},
-  { name: '1楼-免费', money: 0 },
-  { name: '2楼-加收20元', money: 20 },
-  { name: '3楼-加收30元', money: 30 },
-  { name: '4楼-加收40元', money: 40 },
-  { name: '5楼-加收50元', money: 50 },
-  { name: '6楼-加收60元', money: 60 },
-  { name: '7楼-加收70元', money: 70 },
-  { name: '8楼-加收80元', money: 80 }
-]
 
 Page({
   data: {
@@ -56,7 +45,7 @@ Page({
     //下拉框
     nickName: "",
     avatarUrl: "",
-    casArray: casArray,//['电梯-免费', '1楼-免费', '2楼-加收20元', '3楼-加收30元', '4楼-加收40元', '5楼-加收50元', '6楼-加收60元', '7楼-加收70元', '8楼-加收80元'],
+    casArray: [],
     userName: '',
     mobile: '',
     Gender: 'female',
@@ -87,7 +76,9 @@ Page({
 
     distance: 0,
     price: 0,
-    figurePrice: 0
+    figurePrice: 0,
+    hiddenmodalput: true,
+    hiddeTipsput: true,
   },
 
   onLoad: function() {
@@ -108,7 +99,8 @@ Page({
       },
       success: function (res) {
         let data = res.data.Data,
-         carExplainTop = '计价：起步' + data.StartPrice + '元(' + data.StartDistance + '公里)，超出' + data.UnitPrice + '元/公里'
+         carExplainTop = '计价：起步' + data.StartPrice + '元(' + data.StartDistance + '公里)，超出' + data.UnitPrice + '元/公里',
+          casArray = that.getCasArray()
 
         that.setData({
           carExplainTop: carExplainTop,
@@ -116,18 +108,147 @@ Page({
           StartPrice: res.data.Data.StartPrice,
           UnitPrice: res.data.Data.UnitPrice,
           dateTimeArray: obj.dateTimeArray,
-          dateTime: obj.dateTime
+          dateTime: obj.dateTime,
+          // ServiceTime: ServiceTime,
+          casArray: casArray
         });
       }
     })
   },
 
-  //设置搬家时间下拉
-  changeDateTime(e) {debugger
-    this.setData({ dateTime: e.detail.value });
+  //合并搬家时间
+  getServiceTime: function (dateTime, dateTimeArray, current){debugger
+    let dateArr = [],
+      timeArr = [],
+      ServiceTime = '';
+
+    if (!!dateTime && !!dateTime[0] && !!dateTimeArray && !!dateTimeArray[0]) {
+      dateTime.map((item, index) => {
+        if (index < 3) {
+          dateArr.push(dateTimeArray[index][item])
+        } else {
+          timeArr.push(dateTimeArray[index][item])
+        }
+      })
+
+      if (!!current){
+        ServiceTime = dateArr.join('-') + ' ' + timeArr.join(':')
+      }else{
+        ServiceTime = dateArr.join('-') + ' ' + timeArr.join(':') + ':00'
+      }
+    }
+
+    return ServiceTime
   },
 
-  changeDateTimeColumn(e) {
+  //设置电梯下拉
+  getCasArray(value){
+    let data = this.data,
+      carValue = !!value ? value : data.carValue,
+      casArray = [];
+
+    if (carValue == 'car1' || carValue == 'car2'){
+      casArray = [
+        { name: '电梯或无需搬运-免费', money: 0 },
+        { name: '1楼-加收15元', money: 15 },
+        { name: '2楼-加收30元', money: 30 },
+        { name: '3楼-加收45元', money: 45 },
+        { name: '4楼-加收80元', money: 80 },
+        { name: '5楼-加收100元', money: 100 },
+        { name: '6楼-加收120元', money: 120 },
+        { name: '7楼-加收140元', money: 140 },
+        { name: '8楼-加收160元', money: 160 }
+      ]
+    } else if (carValue == 'car3') {
+      casArray = [
+        { name: '电梯或无需搬运-免费', money: 0 },
+        { name: '1楼-加收20元', money: 20 },
+        { name: '2楼-加收40元', money: 40 },
+        { name: '3楼-加收60元', money: 60 },
+        { name: '4楼-加收120元', money: 120 },
+        { name: '5楼-加收150元', money: 150 },
+        { name: '6楼-加收180元', money: 180 },
+        { name: '7楼-加收210元', money: 210 },
+        { name: '8楼-加收240元', money: 240 }
+      ]
+    } else if (carValue == 'car4') {
+      casArray = [
+        { name: '电梯或无需搬运-免费', money: 0 },
+        { name: '1楼-加收30元', money: 30 },
+        { name: '2楼-加收60元', money: 60 },
+        { name: '3楼-加收90元', money: 90 },
+        { name: '4楼-加收160元', money: 160 },
+        { name: '5楼-加收200元', money: 200 },
+        { name: '6楼-加收240元', money: 240 },
+        { name: '7楼-加收280元', money: 280 },
+        { name: '8楼-加收320元', money: 320 }
+      ]
+    }
+    return casArray
+  },
+
+  //设置搬家时间下拉
+  changeDateTime(e) {debugger
+    let data = this.data,
+      dateTime = e.detail.value,
+      price = data.price,
+      dateTimeArray = data.dateTimeArray,
+      ServiceTime = this.getServiceTime(dateTime,dateTimeArray),
+      ServiceTimestamp = Date.parse(ServiceTime),//服务时间时间戳
+      obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear),
+      currentTime = this.getServiceTime(obj.dateTime, obj.dateTimeArray, 'current'),
+      currentTimestamp = Date.parse(currentTime);//服务时间时间戳
+
+    if (ServiceTimestamp < currentTimestamp){
+      wx.showToast({
+        title: '搬家时间不能选择过去的时间哦~',
+        icon: 'none',
+        duration: 1500,
+        mask: true
+      })
+      this.setData({
+        dateTime: dateTime,
+        ServiceTime: ''
+      });
+      return
+    }
+
+    let timeDiff = (ServiceTimestamp - currentTimestamp) * 0.001 / 60 / 60
+
+    if (timeDiff<4){
+      let mulripleNum
+
+      if (timeDiff<2){
+        mulripleNum = 2
+      } else if (4 > timeDiff >= 2 ){
+        mulripleNum = 1.5
+      }
+
+      this.setData({
+        hiddeTipsput: false,
+        dateTime: dateTime,
+        ServiceTime: ServiceTime,
+        mulripleNum: mulripleNum
+      });
+    }else{
+      this.setData({
+        dateTime: dateTime,
+        ServiceTime: ServiceTime,
+        mulripleNum: 1
+      });
+    }
+  },
+
+  //tips弹窗确定
+  confirmTips: function(){
+    this.countPrice(this.data.distance)
+
+    this.setData({
+      hiddeTipsput: true
+    });
+  },
+
+  changeDateTimeColumn(e) {debugger
     var arr = this.data.dateTime, dateArr = this.data.dateTimeArray;
 
     arr[e.detail.column] = e.detail.value;
@@ -138,7 +259,6 @@ Page({
       dateTime: arr
     });
   },
-
 
   //高德
   bindInput: function(e) {
@@ -170,10 +290,7 @@ Page({
 
     let parentid = e.target.dataset.parentid;
     let keywords = e.target.dataset.keywords;
-    var {
-      jsonLocationArray,
-      itemCount
-    } = this.data;
+    var {jsonLocationArray,itemCount} = this.data;
     //起始地
     if (parentid == 'sd') {
       that.origin = e.target.dataset.location
@@ -195,10 +312,7 @@ Page({
         parentid: parentid,
         id: parentid
       };
-      var {
-        jsonArray,
-        itemCount
-      } = this.data;
+      var {jsonArray,itemCount} = this.data;
 
       //动态添加的地址维度
       var jsonLocationData = {
@@ -230,12 +344,22 @@ Page({
     if (jsonLocationArray.length == 0) {
       that.calcDistance(that.origin, that.destination);
     } else {
-      that.calcDynamicDistance(jsonLocationArray);
+      let haveAddressListt = jsonLocationArray.filter(o => {
+        return !!o.location
+      })
+
+      if (!!haveAddressListt[0]) {
+        that.calcDynamicDistance(jsonLocationArray);
+      } else {
+        that.calcDistance(that.origin, that.destination);
+      }
+
+      // that.calcDynamicDistance(jsonLocationArray);
     }
   },
 
   //计算动态里程
-  calcDynamicDistance: function (jsonLocationArray){
+  calcDynamicDistance: function (jsonLocationArray){debugger
     let s, e, that = this;
 
     for (let i = 0; i < jsonLocationArray.length + 1; i++) {
@@ -249,13 +373,15 @@ Page({
         s = jsonLocationArray[i - 1].location;
         e = jsonLocationArray[i].location;
       }
+
       that.calcDistance(s, e);
     }
   },
 
   //计算单个里程
-  calcDistance: function(origin, destination) {
+  calcDistance: function(origin, destination) {debugger
     var that = this;
+
     myAmapFun.getDrivingRoute({
       origin: origin,
       destination: destination,
@@ -302,18 +428,12 @@ Page({
       jsonArray = this.data.jsonArray,
       startMoney = !!this.data.startMoney ? Number(this.data.startMoney) : 0,
       endMoney = !!this.data.endMoney ? Number(this.data.endMoney) : 0,
+      personNum = !!this.data.personNum ? this.data.personNum : 1,
+      mulripleNum = !!this.data.mulripleNum ? this.data.mulripleNum : 1,
       figurePrice,
       price
 
-    if (carValue == 'car1') {//小面  起步208元(10公里)，超出5元/公里
-      price = Number(data.StartPrice) + Number(data.UnitPrice) * beyondDistance
-    } else if (carValue == 'car2') {//金杯 起步288元(10公里)，超出6元/公里
-      price = Number(data.StartPrice) + Number(data.UnitPrice) * beyondDistance
-    } else if (carValue == 'car3') {//全顺 起步388元(10公里)，超出8元/公里
-      price = Number(data.StartPrice) + Number(data.UnitPrice) * beyondDistance
-    } else if (carValue == 'car4') {//厢货 起步1288元(10公里)，超出10元/公里
-      price = Number(data.StartPrice) + Number(data.UnitPrice) * beyondDistance
-    }
+    price = Number(data.StartPrice) + Number(data.UnitPrice) * beyondDistance
 
     figurePrice = !!data.keywordssd && !!data.keywordsed ? price : 0
     price = figurePrice + startMoney + endMoney
@@ -321,6 +441,12 @@ Page({
     for (let i = 0; i < jsonArray.length; i++) {
       price = price + this.data.casArray[jsonArray[i].casIndex].money
     }
+
+    if (personNum>1){
+      price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+    }
+
+    price = price * mulripleNum
 
     that.setData({
       distance: distance,
@@ -368,8 +494,12 @@ Page({
       item = carList.filter(item => { return item.value == value})[0],
       beyondDistance = distance > 10 ? Number(distance) - 10 : 0,
       jsonArray = this.data.jsonArray,
-      startMoney = !!this.data.startMoney ? Number(this.data.startMoney) : 0,
-      endMoney = !!this.data.endMoney ? Number(this.data.endMoney) : 0,
+      casIndex1 = this.data.casIndex1,
+      casIndex2 = this.data.casIndex2,
+      personNum = this.data.personNum,
+      mulripleNum = !!this.data.mulripleNum ? this.data.mulripleNum : 1,
+      startMoney = 0,//= !!this.data.startMoney ? Number(this.data.startMoney) : 0,//
+      endMoney = 0,//= !!this.data.endMoney ? Number(this.data.endMoney) : 0,// 
       figurePrice,
       price;
 
@@ -384,28 +514,38 @@ Page({
       success: function (res) {debugger
         let valueList = res.data.Data,
           carExplainTop = '计价：起步' + valueList.StartPrice + '元(' + valueList.StartDistance + '公里)，超出' + valueList.UnitPrice + '元/公里',
-          carExplainBottom;
+          carExplainBottom,
+          casArray = that.getCasArray(value),
+          casItem1 = casArray[casIndex1],
+          casItem2 = casArray[casIndex2];
+
+        startMoney = casItem1.money
+        endMoney = casItem2.money
 
         if (value == 'car1') {
           carExplainBottom = '容量：可容纳10个包裹，单个包裹限重15公斤';
-          price = Number(valueList.StartPrice) + Number(valueList.UnitPrice) * beyondDistance;
         } else if (value == 'car2') {
           carExplainBottom = '容量：可容纳15个包裹，单个包裹限重15公斤';
-          price = Number(valueList.StartPrice) + Number(valueList.UnitPrice) * beyondDistance
         } else if (value == 'car3') {
           carExplainBottom = '容量：可容纳20个包裹，单个包裹限重15公斤';
-          price = Number(valueList.StartPrice) + Number(valueList.UnitPrice) * beyondDistance
         } else if (value == 'car4') {
           carExplainBottom = '容量：可容纳30个包裹，单个包裹限重15公斤';
-          price = Number(valueList.StartPrice) + Number(valueList.UnitPrice) * beyondDistance
         }
+
+        price = Number(valueList.StartPrice) + Number(valueList.UnitPrice) * beyondDistance;
 
         figurePrice = !!data.keywordssd && !!data.keywordsed ? price : 0
         price = figurePrice + startMoney + endMoney
 
         for (let i = 0; i < jsonArray.length; i++) {
-          price = price + data.casArray[jsonArray[i].casIndex].money
+          price = price + casArray[jsonArray[i].casIndex].money
         }
+
+        if (personNum > 1) {
+          price = (value == 'car1' || value == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+        }
+
+        price = price * mulripleNum
 
         that.setData({
           carExplainTop: carExplainTop,
@@ -416,7 +556,10 @@ Page({
           carType: item.name,
           carValue: value,
           price: price,
-          figurePrice: figurePrice
+          figurePrice: figurePrice,
+          casArray: casArray,
+          startMoney: startMoney,
+          endMoney: endMoney
         });
       }
     })
@@ -432,6 +575,9 @@ Page({
     let jsonArray = this.data.jsonArray,
       casItem = this.data.casArray[e.detail.value],
       figurePrice = this.data.figurePrice,
+      personNum = this.data.personNum,
+      carValue = this.data.carValue,
+      mulripleNum = !!this.data.mulripleNum ? this.data.mulripleNum : 1,
       startMoney,//起始地楼梯收费   
       endMoney;//目的地楼梯收费 
 
@@ -444,6 +590,12 @@ Page({
       for (let i = 0; i < jsonArray.length; i++) {
         price = price + this.data.casArray[jsonArray[i].casIndex].money
       }
+
+      if (personNum > 1) {
+        price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+      }
+
+      price = price * mulripleNum
 
       this.setData({
         casIndex1: e.detail.value,
@@ -459,6 +611,12 @@ Page({
       for (let i = 0; i < jsonArray.length; i++) {
         price = price + this.data.casArray[jsonArray[i].casIndex].money
       }
+
+      if (personNum > 1) {
+        price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+      }
+
+      price = price * mulripleNum
 
       this.setData({
         casIndex2: e.detail.value,
@@ -479,6 +637,12 @@ Page({
         price = price + this.data.casArray[jsonArray[i].casIndex].money
       }
 
+      if (personNum > 1) {
+        price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+      }
+
+      price = price * mulripleNum
+
       this.setData({
         jsonArray: jsonArray,
         price: price
@@ -486,24 +650,27 @@ Page({
     }
   },
   //添加途经点
-  addPassingPlace: function() {
-    var {
-      jsonArray,
-      itemCount
-    } = this.data;
-    var newData = {
+  addPassingPlace: function() {debugger
+    var { jsonArray, itemCount, jsonLocationArray} = this.data;
+    var jsonArrayData = {
       id: itemCount,
       parentid: itemCount,
       casIndex: 0
     };
-    jsonArray.push(newData);
+    var jsonLocationData = {
+      parentid: itemCount
+    }
+    
+    jsonArray.push(jsonArrayData);
+    jsonLocationArray.push(jsonArrayData);
     this.setData({
       jsonArray: jsonArray,
       itemCount: itemCount + 1,
+      jsonLocationArray: jsonLocationArray
     })
   },
   //删除途径点
-  delPassingPlace: function(e) {
+  delPassingPlace: function(e) {debugger
     let { jsonArray, itemCount, jsonLocationArray} = this.data,
       index = e.target.dataset.index
 
@@ -512,19 +679,37 @@ Page({
     for (var i = 0; i < jsonArray.length; i++) {
       jsonArray[i].id = i
       jsonArray[i].parentid = i
+      jsonLocationArray[i].parentid = i
     }
     itemCount = itemCount - 1
 
     this.setData({
       jsonArray: jsonArray,
-      itemCount: itemCount + 1,
+      jsonLocationArray: jsonLocationArray,
+      itemCount: itemCount,
       distance: 0//距离请零重新计算
     })
 
     if (!!jsonLocationArray[0]){//有途经点
-      this.calcDynamicDistance(jsonLocationArray);
+      let haveAddressListt = jsonLocationArray.filter(o=>{
+        return !!o.location
+      })
+
+      if (!!haveAddressListt[0]){
+        this.calcDynamicDistance(jsonLocationArray);
+      }else{
+        if (!this.origin || !this.destination) {
+          this.countPrice(this.data.distance)
+        } else {
+          this.calcDistance(this.origin, this.destination);
+        }
+      }
     }else{
-      this.calcDistance(this.origin, this.destination);
+      if (!this.origin || !this.destination){
+        this.countPrice(this.data.distance)
+      }else{
+        this.calcDistance(this.origin, this.destination);
+      }
     }
     console.log(jsonArray.length, '////////', itemCount)
   },
@@ -548,11 +733,30 @@ Page({
   },
 
   //录入搬家师傅数量
-  bindPersonNumInput: function (e) {
-    var value = e.detail.value;
+  bindPersonNumInput: function (e) {debugger
+    var value = e.detail.value,
+      jsonArray = this.data.jsonArray,
+      carValue = this.data.carValue,
+      figurePrice = this.data.figurePrice,
+      personNum = this.data.personNum,
+      mulripleNum = !!this.data.mulripleNum ? this.data.mulripleNum : 1,
+      startMoney = this.data.startMoney,//起始地楼梯收费   
+      endMoney = this.data.endMoney,//目的地楼梯收费
+      price = figurePrice + startMoney + endMoney;
+
+    for (let i = 0; i < jsonArray.length; i++) {
+      price = price + this.data.casArray[jsonArray[i].casIndex].money
+    }
+
+    if (!!value && value > 1) {
+      price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(value) - 1) * 200 : price + (Number(value) - 1) * 300
+    }
+
+    price = price * mulripleNum
 
     this.setData({
-      personNum: value
+      personNum: value,
+      price: price
     });
   },
 
@@ -581,11 +785,11 @@ Page({
   placeOrder: function(e){debugger
     let that = this,
       data = that.data,
-      dateTime = data.dateTime,
-      dateTimeArray = data.dateTimeArray,
-      dateArr = [],
-      timeArr = [],
-      serviceTime = '';
+      // dateTime = data.dateTime,
+      // dateTimeArray = data.dateTimeArray,
+      // dateArr = [],
+      // timeArr = [],
+      ServiceTime = data.ServiceTime;
 
     if (!data.keywordssd){
       wx.showToast({
@@ -603,7 +807,7 @@ Page({
         mask: true
       })
       return
-    } else if (!data.dateTime) {
+    } else if (!data.ServiceTime) {
       wx.showToast({
         title: '请选择搬家时间',
         icon: 'none',
@@ -629,17 +833,17 @@ Page({
       return
     }
 
-    if (!!data.dateTime && !!data.dateTime[0] && !!dateTimeArray && !!dateTimeArray[0]){
-      data.dateTime.map((item,index)=>{
-        if (index<3){
-          dateArr.push(dateTimeArray[index][item])
-        }else{
-          timeArr.push(dateTimeArray[index][item])
-        }
-      })
+    // if (!!data.dateTime && !!data.dateTime[0] && !!dateTimeArray && !!dateTimeArray[0]){
+    //   data.dateTime.map((item,index)=>{
+    //     if (index<3){
+    //       dateArr.push(dateTimeArray[index][item])
+    //     }else{
+    //       timeArr.push(dateTimeArray[index][item])
+    //     }
+    //   })
 
-      serviceTime = dateArr.join('-') + ' ' + timeArr.join(':') + ':00'
-    }
+    //   serviceTime = dateArr.join('-') + ' ' + timeArr.join(':') + ':00'
+    // }
     
     let queryParams = {
         OpenID: app.globalData.openID,
@@ -649,13 +853,13 @@ Page({
         EndPlace: data.keywordsed,
         Name: data.name,
         OrderNo:'',
-        OrgPrice: data.price,
-        PayPrice: data.price,
+        OrgPrice: data.price,//0.01,//
+        PayPrice: data.price,//0.01,//
         PeopleNum: !!data.personNum ? data.personNum : 1,
         Phone: data.phoneNum,
         SalePrice:0,
         CouponCode: !!data.saleCode ? data.saleCode : '',
-        ServiceTime: serviceTime,
+        ServiceTime: ServiceTime,
         StartPlace: data.keywordssd,
         Remark: data.remark,
         PayState: 0
@@ -679,46 +883,93 @@ Page({
           })
           return
         }
-        wx.request({
-          url: app.globalData.url + '/WXPay/WxUnifiedOrder',
-          data: { 
-            openID: app.globalData.openID, 
-            total_fee: data.PayPrice*100, 
-            out_trade_no: data.OrderNo,
-            body: '搬家服务'
-          },
-          header: {
-            'content-type': 'application/json' // 默认值
-          },
+
+        if (!!res.data.Status){
+          that.setData({
+            hiddenmodalput: false,
+            PayPrice: data.PayPrice,
+            OrderNo: data.OrderNo
+          });
+        }else{
+          wx.showToast({
+            title: '下单失败，请稍后重试~',
+            icon: 'none',
+            duration: 1500,
+            mask: true
+          })
+        }
+      
+      }
+    })
+
+
+  },
+
+  //立即付款
+  confirm: function () {
+    debugger
+    let that = this,
+      data = this.data;
+
+    that.setData({
+      hiddenmodalput: true
+    });
+    
+    wx.request({
+      url: app.globalData.url + '/WXPay/WxUnifiedOrder',
+      data: {
+        openID: app.globalData.openID,
+        total_fee: data.PayPrice * 100,
+        out_trade_no: data.OrderNo,
+        body: '搬家服务'
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        let data = JSON.parse(res.data.Data)
+
+        wx.requestPayment({
+          timeStamp: data.timeStamp,
+          nonceStr: data.nonceStr,
+          package: data.package,
+          signType: 'MD5',
+          paySign: data.paySign,
           success: function (res) {
-            let data = JSON.parse(res.data.Data)
-
-            wx.requestPayment({
-              timeStamp: data.timeStamp,
-              nonceStr: data.nonceStr,
-              package: data.package,
-              signType: 'MD5',
-              paySign: data.paySign,
-              success: function (res) {
-                // success
-                console.log(res);
-              },
-              fail: function (res) {
-                // fail
-                console.log(res);
-              },
-              complete: function (res) {
-                // complete
-                console.log(res);
-              }
+            // success
+            console.log(res);
+            wx.showToast({
+              title: '付款成功',
+              icon: 'none',
+              duration: 1000,
+              mask: true
             })
-
+          },
+          fail: function (res) {
+            // fail
+            console.log(res);
+            wx.showToast({
+              title: '付款失败，请稍后重试~',
+              icon: 'none',
+              duration: 1500,
+              mask: true
+            })
+          },
+          complete: function (res) {
+            // complete
+            console.log(res);
           }
         })
 
       }
     })
+  },
+  //取消评价
+  cancel: function () {
 
-
+    this.setData({
+      hiddenmodalput: true
+    });
   }
+
 })

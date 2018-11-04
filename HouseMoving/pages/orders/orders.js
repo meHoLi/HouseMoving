@@ -93,7 +93,7 @@ Page({
   },
 
   //取消订单
-  cancel:function(e){
+  cancel:function(e){debugger
     let id = e.currentTarget.dataset.item.ID,
       that = this;
 
@@ -105,7 +105,7 @@ Page({
       header: {
         'content-type': 'application/json' // 默认值
       },
-      success: function (res) {
+      success: function (res) {debugger
 
         if (!!res.data.Status){
           wx.showToast({
@@ -287,7 +287,7 @@ Page({
     }
   },
   //取消评价
-  cancel: function(){
+  cancelModal: function(){
     
     this.setData({
       hiddenmodalput: true,

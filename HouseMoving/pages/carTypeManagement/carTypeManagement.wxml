@@ -10,19 +10,19 @@
           <view  class='title'>
             <text>起步价:</text>    
           </view>
-          <input bindinput="bindStartPriceInput" data-index='{{index}}' data-item='{{item}}' focus="true" value='{{item.StartPrice}}' type="number" placeholder="请输入起步价"/>
+          <input bindinput="bindStartPriceInput" data-index='{{index}}' data-item='{{item}}' value='{{item.StartPrice}}' type="number" placeholder="请输入起步价"/>
         </view>
         <!-- <view class='changeItem'>
           <view class='title'>
             <text>起步里程:</text> 
           </view>
-          <input bindinput="bindStartDistanceInput" data-index='{{index}}' data-item='{{item}}' focus="true" value='{{item.StartDistance}}' type="number" placeholder="请输入起步里程"/>
+          <input bindinput="bindStartDistanceInput" data-index='{{index}}' data-item='{{item}}' value='{{item.StartDistance}}' type="number" placeholder="请输入起步里程"/>
         </view> -->
         <view class='changeItem'>
           <view class='title'>
             <text>超出单价:</text>
           </view>
-          <input bindinput="bindUnitPriceInput" data-index='{{index}}' data-item='{{item}}' focus="true" value='{{item.UnitPrice}}' type="number" placeholder="请输入超出单价"/>
+          <input bindinput="bindUnitPriceInput" data-index='{{index}}' data-item='{{item}}' value='{{item.UnitPrice}}' type="number" placeholder="请输入超出单价"/>
         </view>
       </view>
       <view class='btn'>
