@@ -905,6 +905,8 @@ Page({
         }
 
         if (!!res.data.Status) {
+          util.sendMsg();
+
           that.setData({
             hiddenmodalput: false,
             PayPrice: data.PayPrice,
@@ -964,6 +966,8 @@ Page({
               duration: 1000,
               mask: true
             })
+
+            util.sendMsg();
           },
           fail: function (res) {
             // fail

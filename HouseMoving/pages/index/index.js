@@ -885,11 +885,14 @@ Page({
         }
 
         if (!!res.data.Status){
+          util.sendMsg();
+
           that.setData({
             hiddenmodalput: false,
             PayPrice: data.PayPrice,
             OrderNo: data.OrderNo
           });
+
         }else{
           wx.showToast({
             title: '下单失败，请稍后重试~',
@@ -901,7 +904,6 @@ Page({
       
       }
     })
-
 
   },
 
@@ -943,7 +945,9 @@ Page({
               icon: 'none',
               duration: 1000,
               mask: true
-            })
+            });
+
+            util.sendMsg();
           },
           fail: function (res) {
             // fail

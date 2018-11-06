@@ -3,10 +3,10 @@
   <view class="info-cont">
 
     <view class='info'>
-      <!-- <view class="head">
-        <image class="userinfo-avatar" src="../../img/head.png" background-size="cover"></image>
-        <text class="userinfo-nickname">昵称</text>
-      </view> -->
+      <view class='serviceBody'>
+        <view class="service servicePhone">客服电话：18916840930</view>
+        <view class="service serviceWX">微信号：18916840930</view>
+      </view>
 
       <view class="infoMain">
         <view wx:for="{{list}}" wx:key="{{index}}" class="item '{{'item'+index}}'">

@@ -114,6 +114,7 @@ Page({
             duration: 1000,
             mask: true
           })
+          util.sendMsg();
           that.tempData();
         }
         
@@ -154,6 +155,7 @@ Page({
               duration: 1000,
               mask: true
             })
+            util.sendMsg();
             that.tempData();
           },
           fail: function (res) {
@@ -201,6 +203,7 @@ Page({
             duration: 1000,
             mask: true
           })
+          util.sendMsg();
           that.tempData();
         }else{
           wx.showToast({

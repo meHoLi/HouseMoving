@@ -7,20 +7,13 @@
   justify-content: space-between;
 }
 
-.head{
-  font-size: 46rpx;
+.serviceBody{
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 40rpx 0; 
-  background: #c0e0ff;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 0 20rpx;
-  border-radius: 50%;
+  justify-content: space-between;
+  /* color: #9e9e9e; */
+  padding: 20rpx; 
 }
 
 .infoMain {
@@ -36,6 +29,10 @@
   line-height: 80rpx;
   overflow: hidden;
   margin-left: 20rpx; 
+}
+
+.item:nth-child(1){
+  border-top: 2rpx solid #eee;
 }
 
 .inner.txt {
