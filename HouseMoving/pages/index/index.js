@@ -79,6 +79,9 @@ Page({
     figurePrice: 0,
     hiddenmodalput: true,
     hiddeTipsput: true,
+    showMask: true,
+
+    personNumTitle:'请输入搬家师傅人数，默认1人'
   },
 
   onLoad: function() {
@@ -193,10 +196,10 @@ Page({
       dateTime = e.detail.value,
       price = data.price,
       dateTimeArray = data.dateTimeArray,
-      ServiceTime = this.getServiceTime(dateTime,dateTimeArray),
+      ServiceTime = this.getServiceTime(dateTime, dateTimeArray).split('-').join('/'),
       ServiceTimestamp = Date.parse(ServiceTime),//服务时间时间戳
       obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear),
-      currentTime = this.getServiceTime(obj.dateTime, obj.dateTimeArray, 'current'),
+      currentTime = this.getServiceTime(obj.dateTime, obj.dateTimeArray, 'current').split('-').join('/'),
       currentTimestamp = Date.parse(currentTime);//服务时间时间戳
 
     if (ServiceTimestamp < currentTimestamp){
@@ -222,30 +225,31 @@ Page({
         mulripleNum = 2
       } else if (4 > timeDiff >= 2 ){
         mulripleNum = 1.5
+      }else{
+        mulripleNum = 1
       }
 
       this.setData({
         hiddeTipsput: false,
         dateTime: dateTime,
-        ServiceTime: ServiceTime,
-        mulripleNum: mulripleNum
+        ServiceTime: ServiceTime.split('/').join('-'),
+        mulripleNum: mulripleNum,
+        showMask: false
       });
     }else{
       this.setData({
         dateTime: dateTime,
-        ServiceTime: ServiceTime,
+        ServiceTime: ServiceTime.split('/').join('-'),
         mulripleNum: 1
       });
+
+      this.countPrice(this.data.distance)
     }
   },
 
   //tips弹窗确定
   confirmTips: function(){
     this.countPrice(this.data.distance)
-
-    this.setData({
-      hiddeTipsput: true
-    });
   },
 
   changeDateTimeColumn(e) {debugger
@@ -426,9 +430,11 @@ Page({
       carValue = data.carValue,
       beyondDistance = distance > 10 ? Number(distance) - 10 : 0,
       jsonArray = this.data.jsonArray,
+      jsonLocationArray = !!this.data.jsonLocationArray ? this.data.jsonLocationArray : [],
+      haveJsonList = jsonLocationArray.filter(o => {return !!o.location}),
       startMoney = !!this.data.startMoney ? Number(this.data.startMoney) : 0,
       endMoney = !!this.data.endMoney ? Number(this.data.endMoney) : 0,
-      personNum = !!this.data.personNum ? this.data.personNum : 1,
+      personNum = !!this.data.personNum ? this.data.personNum : (carValue == 'car4' ? 2 : 1),
       mulripleNum = !!this.data.mulripleNum ? this.data.mulripleNum : 1,
       figurePrice,
       price
@@ -442,8 +448,14 @@ Page({
       price = price + this.data.casArray[jsonArray[i].casIndex].money
     }
 
-    if (personNum>1){
-      price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+    if (!!haveJsonList[0]){
+      price = price + haveJsonList.length * (carValue == 'car4' ? 200 : 50)
+    }
+
+    if (personNum > 1 && carValue!='car4'){
+      price = price + (Number(personNum) - 1) * 200
+    } else if (personNum > 2 && carValue == 'car4'){
+      price = price + (Number(personNum) - 2) * 300
     }
 
     price = price * mulripleNum
@@ -451,7 +463,9 @@ Page({
     that.setData({
       distance: distance,
       price: price,
-      figurePrice: figurePrice
+      figurePrice: figurePrice,
+      hiddeTipsput: true,
+      showMask: true
     });
   },
 
@@ -496,7 +510,9 @@ Page({
       jsonArray = this.data.jsonArray,
       casIndex1 = this.data.casIndex1,
       casIndex2 = this.data.casIndex2,
-      personNum = this.data.personNum,
+      jsonLocationArray = !!this.data.jsonLocationArray ? this.data.jsonLocationArray : [],
+      haveJsonList = jsonLocationArray.filter(o => { return !!o.location }),
+      personNum = this.data.personNum ? this.data.personNum : (value == 'car4' ? 2 : 1),
       mulripleNum = !!this.data.mulripleNum ? this.data.mulripleNum : 1,
       startMoney = 0,//= !!this.data.startMoney ? Number(this.data.startMoney) : 0,//
       endMoney = 0,//= !!this.data.endMoney ? Number(this.data.endMoney) : 0,// 
@@ -535,14 +551,20 @@ Page({
         price = Number(valueList.StartPrice) + Number(valueList.UnitPrice) * beyondDistance;
 
         figurePrice = !!data.keywordssd && !!data.keywordsed ? price : 0
-        price = figurePrice + startMoney + endMoney
+        price = figurePrice + Number(startMoney) + Number(endMoney)
 
         for (let i = 0; i < jsonArray.length; i++) {
           price = price + casArray[jsonArray[i].casIndex].money
         }
 
-        if (personNum > 1) {
-          price = (value == 'car1' || value == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+        if (!!haveJsonList[0]) {
+          price = price + haveJsonList.length * (value == 'car4' ? 200 : 50)
+        }
+
+        if (personNum > 1 && value != 'car4') {
+          price = price + (Number(personNum) - 1) * 200
+        } else if (personNum > 2 && value == 'car4') {
+          price = price + (Number(personNum) - 2) * 300
         }
 
         price = price * mulripleNum
@@ -559,7 +581,8 @@ Page({
           figurePrice: figurePrice,
           casArray: casArray,
           startMoney: startMoney,
-          endMoney: endMoney
+          endMoney: endMoney,
+          personNumTitle: value == 'car4' ? '请输入搬家师傅人数，默认2人' : '请输入搬家师傅人数，默认1人'
         });
       }
     })
@@ -573,10 +596,12 @@ Page({
     console.log('乔丹选的是', e.detail.value, this.data.casArray[e.detail.value])
 
     let jsonArray = this.data.jsonArray,
+      jsonLocationArray = !!this.data.jsonLocationArray ? this.data.jsonLocationArray : [],
+      haveJsonList = jsonLocationArray.filter(o => { return !!o.location }),
       casItem = this.data.casArray[e.detail.value],
       figurePrice = this.data.figurePrice,
-      personNum = this.data.personNum,
       carValue = this.data.carValue,
+      personNum = this.data.personNum ? this.data.personNum : (carValue == 'car4' ? 2 : 1),
       mulripleNum = !!this.data.mulripleNum ? this.data.mulripleNum : 1,
       startMoney,//起始地楼梯收费   
       endMoney;//目的地楼梯收费 
@@ -585,14 +610,20 @@ Page({
       startMoney = casItem.money
       endMoney = !!this.data.endMoney ? Number(this.data.endMoney) : 0
 
-      let price = figurePrice + startMoney + endMoney
+      let price = figurePrice + Number(startMoney) + Number(endMoney)
 
       for (let i = 0; i < jsonArray.length; i++) {
         price = price + this.data.casArray[jsonArray[i].casIndex].money
       }
 
-      if (personNum > 1) {
-        price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+      if (!!haveJsonList[0]) {
+        price = price + haveJsonList.length * (carValue == 'car4' ? 200 : 50)
+      }
+
+      if (personNum > 1 && carValue != 'car4') {
+        price = price + (Number(personNum) - 1) * 200
+      } else if (personNum > 2 && carValue == 'car4') {
+        price = price + (Number(personNum) - 2) * 300
       }
 
       price = price * mulripleNum
@@ -606,14 +637,20 @@ Page({
       startMoney = !!this.data.startMoney ? Number(this.data.startMoney) : 0
       endMoney = casItem.money
 
-      let price = figurePrice + startMoney + endMoney
+      let price = figurePrice + Number(startMoney) + Number(endMoney)
 
       for (let i = 0; i < jsonArray.length; i++) {
         price = price + this.data.casArray[jsonArray[i].casIndex].money
       }
+      
+      if (!!haveJsonList[0]) {
+        price = price + haveJsonList.length * (carValue == 'car4' ? 200 : 50)
+      }
 
-      if (personNum > 1) {
-        price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+      if (personNum > 1 && carValue != 'car4') {
+        price = price + (Number(personNum) - 1) * 200
+      } else if (personNum > 2 && carValue == 'car4') {
+        price = price + (Number(personNum) - 2) * 300
       }
 
       price = price * mulripleNum
@@ -629,7 +666,7 @@ Page({
 
       let item = e.currentTarget.dataset.item,
         index = e.currentTarget.dataset.index,
-        price = figurePrice + startMoney + endMoney
+        price = figurePrice + Number(startMoney) + Number(endMoney)
 
       jsonArray[index].casIndex = e.detail.value
 
@@ -637,8 +674,14 @@ Page({
         price = price + this.data.casArray[jsonArray[i].casIndex].money
       }
 
-      if (personNum > 1) {
-        price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(personNum) - 1) * 200 : price + (Number(personNum) - 1) * 300
+      if (!!haveJsonList[0]) {
+        price = price + haveJsonList.length * (carValue == 'car4' ? 200 : 50)
+      }
+
+      if (personNum > 1 && carValue != 'car4') {
+        price = price + (Number(personNum) - 1) * 200
+      } else if (personNum > 2 && carValue == 'car4') {
+        price = price + (Number(personNum) - 2) * 300
       }
 
       price = price * mulripleNum
@@ -647,6 +690,29 @@ Page({
         jsonArray: jsonArray,
         price: price
       })
+    }
+  },
+  //几号几室
+  bindHouseNumInput: function(e){
+
+    if (e.currentTarget.dataset.flag == "start") {
+      this.setData({
+        startHouseNum: e.detail.value
+      })
+    } else if (e.currentTarget.dataset.flag == "end") {
+      this.setData({
+        endHouseNum: e.detail.value
+      })
+    } else if (e.currentTarget.dataset.flag == "passing") {
+      let jsonArray = this.data.jsonArray,
+        item = e.currentTarget.dataset.item,
+        index = e.currentTarget.dataset.index
+
+      jsonArray[index].houseNum = e.detail.value;
+
+      this.setData({
+        jsonArray: jsonArray
+      });
     }
   },
   //添加途经点
@@ -736,20 +802,27 @@ Page({
   bindPersonNumInput: function (e) {debugger
     var value = e.detail.value,
       jsonArray = this.data.jsonArray,
+      jsonLocationArray = !!this.data.jsonLocationArray ? this.data.jsonLocationArray : [],
+      haveJsonList = jsonLocationArray.filter(o => { return !!o.location }),
       carValue = this.data.carValue,
       figurePrice = this.data.figurePrice,
-      personNum = this.data.personNum,
       mulripleNum = !!this.data.mulripleNum ? this.data.mulripleNum : 1,
-      startMoney = this.data.startMoney,//起始地楼梯收费   
-      endMoney = this.data.endMoney,//目的地楼梯收费
+      startMoney = !!this.data.startMoney ? Number(this.data.startMoney) : 0,//起始地楼梯收费   
+      endMoney = !!this.data.endMoney ? Number(this.data.endMoney) : 0,//目的地楼梯收费
       price = figurePrice + startMoney + endMoney;
 
     for (let i = 0; i < jsonArray.length; i++) {
       price = price + this.data.casArray[jsonArray[i].casIndex].money
     }
 
-    if (!!value && value > 1) {
-      price = (carValue == 'car1' || carValue == 'car2') ? price + (Number(value) - 1) * 200 : price + (Number(value) - 1) * 300
+    if (!!haveJsonList[0]) {
+      price = price + haveJsonList.length * (carValue == 'car4' ? 200 : 50)
+    }
+
+    if (value > 1 && carValue != 'car4') {
+      price = price + (Number(value) - 1) * 200
+    } else if (value > 2 && carValue == 'car4') {
+      price = price + (Number(value) - 2) * 300
     }
 
     price = price * mulripleNum
@@ -785,10 +858,6 @@ Page({
   placeOrder: function(e){debugger
     let that = this,
       data = that.data,
-      // dateTime = data.dateTime,
-      // dateTimeArray = data.dateTimeArray,
-      // dateArr = [],
-      // timeArr = [],
       ServiceTime = data.ServiceTime;
 
     if (!data.keywordssd){
@@ -833,19 +902,9 @@ Page({
       return
     }
 
-    // if (!!data.dateTime && !!data.dateTime[0] && !!dateTimeArray && !!dateTimeArray[0]){
-    //   data.dateTime.map((item,index)=>{
-    //     if (index<3){
-    //       dateArr.push(dateTimeArray[index][item])
-    //     }else{
-    //       timeArr.push(dateTimeArray[index][item])
-    //     }
-    //   })
-
-    //   serviceTime = dateArr.join('-') + ' ' + timeArr.join(':') + ':00'
-    // }
-    
-    let queryParams = {
+    let startHouseNum = data.startHouseNum,
+      endHouseNum = data.endHouseNum,
+      queryParams = {
         OpenID: app.globalData.openID,
         CarType: data.carType,
         CreateTime:'',
@@ -855,7 +914,7 @@ Page({
         OrderNo:'',
         OrgPrice: data.price,//0.01,//
         PayPrice: data.price,//0.01,//
-        PeopleNum: !!data.personNum ? data.personNum : 1,
+        PeopleNum: !!data.personNum ? data.personNum : (data.carValue == 'car4' ? 2 : 1),
         Phone: data.phoneNum,
         SalePrice:0,
         CouponCode: !!data.saleCode ? data.saleCode : '',
@@ -864,6 +923,14 @@ Page({
         Remark: data.remark,
         PayState: 0
       };
+    
+    if (!!startHouseNum){
+      queryParams.StartPlace = queryParams.StartPlace + startHouseNum
+    }
+
+    if (!!endHouseNum) {
+      queryParams.EndPlace = queryParams.EndPlace + endHouseNum
+    }
 
     wx.request({
       url: app.globalData.url + '/Order/Add',
@@ -890,7 +957,8 @@ Page({
           that.setData({
             hiddenmodalput: false,
             PayPrice: data.PayPrice,
-            OrderNo: data.OrderNo
+            OrderNo: data.OrderNo,
+            showMask: false
           });
 
         }else{
@@ -914,7 +982,8 @@ Page({
       data = this.data;
 
     that.setData({
-      hiddenmodalput: true
+      hiddenmodalput: true,
+      showMask: true
     });
     
     wx.request({
@@ -972,7 +1041,8 @@ Page({
   cancel: function () {
 
     this.setData({
-      hiddenmodalput: true
+      hiddenmodalput: true,
+      showMask: true
     });
   }
 

@@ -21,8 +21,9 @@ Page({
   tempData: function () {
     let list
     
-    if (app.globalData.openID == 'ov_MG0RcvivFDwKb5zQNZ8mq8R0I'
-      || app.globalData.openID == 'ov_MG0UPZ9APJfo07u53n9q-dIvA'){
+    if (app.globalData.openID == 'ov_MG0YFFY2_3krqGWQtQlujKzHo'//李贺
+      || app.globalData.openID == 'ov_MG0RcvivFDwKb5zQNZ8mq8R0I'//陈秋杉
+      || app.globalData.openID == 'ov_MG0UPZ9APJfo07u53n9q-dIvA'){//尊涵
         list = [
           {
             txt: "历史订单",
@@ -65,6 +66,13 @@ Page({
     this.setData({
       list: list
     });
+  },
+
+  //打电话
+  tel: function () {
+    wx.makePhoneCall({
+      phoneNumber: '18916840930',
+    })
   },
 
   editInfo: function (e) {

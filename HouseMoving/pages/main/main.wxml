@@ -4,9 +4,12 @@
 
     <view class='info'>
       <view class='serviceBody'>
-        <view class="service servicePhone">客服电话：18916840930</view>
-        <view class="service serviceWX">微信号：18916840930</view>
+        <view class="service servicePhone">客服电话：
+          <text class='phoneNum' bindtap='tel'>18916840930</text>  
+        </view>
+        <view class="service serviceWX">微信号：bangjia18916840930</view>
       </view>
+
 
       <view class="infoMain">
         <view wx:for="{{list}}" wx:key="{{index}}" class="item '{{'item'+index}}'">
@@ -15,7 +18,7 @@
             <text class="item-text" data-index="{{index}}" data-item="{{item}}">{{item.txt}}</text>
 
             <view data-index="{{index}}" data-item="{{item}}" class="item-edit">
-              <image mode="widthFix" src="../../img/next.png"></image>
+              <image mode="widthFix" src="../../img/next1.png"></image>
             </view>
           </view>
         </view>

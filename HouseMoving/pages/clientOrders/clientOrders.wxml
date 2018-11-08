@@ -17,6 +17,10 @@
               <view class='itemText'>{{item.OrderNo}}</view>
             </view>
             <view class="itemInfo">
+              <text class='title'>创建时间：</text>
+              <view class='itemText'>{{item.CreateTime}}</view>
+            </view>
+            <view class="itemInfo">
               <text class='title'>服务时间：</text>
               <view class='itemText'>{{item.ServiceTime}}</view>
             </view>

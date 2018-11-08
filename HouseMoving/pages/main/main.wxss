@@ -16,6 +16,10 @@
   padding: 20rpx; 
 }
 
+.phoneNum{
+  color: #54cbf0;
+}
+
 .infoMain {
   /* display: none; */
   width: 100%;
