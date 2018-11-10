@@ -22,10 +22,10 @@ Page({
     //车型计价和容量
     carExplainTop: '',
     carExplainBottom: '容量：可容纳体积3个立方',
-    carType: '单身汪/萌妹子',
+    carType: '单身汪',
     carValue: 'car5',
     carList: [{
-        name: '单身汪/萌妹子',
+        name: '单身汪',
         value: 'car5',
         checked: 'true'
       },
@@ -86,6 +86,7 @@ Page({
     price: 0,
     figurePrice: 0,
     hiddenmodalput: true,
+    orderDetail: {},
     hiddeTipsput: true,
     showMask: true
   },
@@ -224,7 +225,7 @@ Page({
 
       if (timeDiff < 2) {
         mulripleNum = 2
-      } else if (4 > timeDiff >= 2) {
+      } else if (4 > timeDiff || timeDiff >= 2) {
         mulripleNum = 1.5
       }else{
         mulripleNum = 1
@@ -233,14 +234,14 @@ Page({
       this.setData({
         hiddeTipsput: false,
         dateTime: dateTime,
-        ServiceTime: ServiceTime,
+        ServiceTime: ServiceTime.split('/').join('-'),
         mulripleNum: mulripleNum,
         showMask: false
       });
     } else {
       this.setData({
         dateTime: dateTime,
-        ServiceTime: ServiceTime,
+        ServiceTime: ServiceTime.split('/').join('-'),
         mulripleNum: 1
       });
 
@@ -862,8 +863,7 @@ Page({
   placeOrder: function (e) {
     debugger
     let that = this,
-      data = that.data,
-      ServiceTime = data.ServiceTime;
+      data = that.data;
 
     if (!data.keywordssd) {
       wx.showToast({
@@ -907,35 +907,7 @@ Page({
       return
     }
 
-    let startHouseNum = data.startHouseNum,
-      endHouseNum = data.endHouseNum,
-      queryParams = {
-      OpenID: app.globalData.openID,
-      CarType: data.carType,
-      CreateTime: '',
-      Distance: data.distance,//未使用
-      EndPlace: data.keywordsed,
-      Name: data.name,
-      OrderNo: '',
-      OrgPrice: data.price,//0.01,//
-      PayPrice: data.price,//0.01,//
-      PeopleNum: !!data.personNum ? data.personNum : 1,
-      Phone: data.phoneNum,
-      SalePrice: 0,
-      CouponCode: !!data.saleCode ? data.saleCode : '',
-      ServiceTime: ServiceTime,
-      StartPlace: data.keywordssd,
-      Remark: data.remark,
-      PayState: 0
-    };
-
-    if (!!startHouseNum) {
-      queryParams.StartPlace = queryParams.StartPlace + startHouseNum
-    }
-
-    if (!!endHouseNum) {
-      queryParams.EndPlace = queryParams.EndPlace + endHouseNum
-    }
+    let queryParams = that.getQueryParams(data);
 
     wx.request({
       url: app.globalData.url + '/Order/Add',
@@ -964,7 +936,8 @@ Page({
             hiddenmodalput: false,
             PayPrice: data.PayPrice,
             OrderNo: data.OrderNo,
-            showMask: false
+            showMask: false,
+            orderDetail: res.data.Data
           });
         } else {
           wx.showToast({
@@ -981,6 +954,54 @@ Page({
 
   },
 
+  //获取下单数据
+  getQueryParams: function (data) {
+    debugger
+    let jsonArray = data.jsonArray,
+      TuJingDian = [],
+      startHouseNum = data.startHouseNum,
+      endHouseNum = data.endHouseNum,
+      queryParams = {
+        OpenID: app.globalData.openID,
+        CarType: data.carType,
+        CreateTime: '',
+        Distance: data.distance,//未使用
+        EndPlace: data.keywordsed,
+        Name: data.name,
+        OrderNo: '',
+        OrgPrice: data.price,
+        PayPrice: data.price,//0.01,//
+        PeopleNum: !!data.personNum ? data.personNum : (data.carValue == 'car4' ? 2 : 1),
+        Phone: data.phoneNum,
+        SalePrice: 0,
+        CouponCode: !!data.saleCode ? data.saleCode : '',
+        ServiceTime: data.ServiceTime,
+        StartPlace: data.keywordssd,
+        Remark: data.remark,
+        PayState: 0
+      };
+
+    if (!!startHouseNum) {
+      queryParams.StartPlace = queryParams.StartPlace + startHouseNum
+    }
+
+    if (!!endHouseNum) {
+      queryParams.EndPlace = queryParams.EndPlace + endHouseNum
+    }
+
+    if (!!jsonArray && !!jsonArray[0]) {
+      jsonArray.map(o => {
+        if (!!o.keywords) {
+          TuJingDian.push(o.keywords)
+        }
+      })
+    }
+
+    queryParams.TuJingDian = TuJingDian
+
+    return queryParams
+  },
+
   //立即付款
   confirm: function () {
     debugger
@@ -989,7 +1010,8 @@ Page({
 
     that.setData({
       hiddenmodalput: true,
-      showMask: true
+      showMask: true,
+      orderDetail: {}
     });
 
     wx.request({
@@ -1023,6 +1045,10 @@ Page({
             })
 
             util.sendMsg();
+
+            wx.navigateTo({
+              url: '../orders/orders'
+            })
           },
           fail: function (res) {
             // fail
@@ -1043,13 +1069,18 @@ Page({
       }
     })
   },
-  //取消评价
+  //暂不支付
   cancel: function () {
 
     this.setData({
       hiddenmodalput: true,
-      showMask: true
+      showMask: true,
+      orderDetail: {}
     });
+
+    wx.navigateTo({
+      url: '../orders/orders'
+    })
   }
 
 })

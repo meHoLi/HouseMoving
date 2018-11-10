@@ -51,6 +51,14 @@
   width: 100%;
 }
 
+.serviceTime .itemText{
+  color: #04be01;
+}
+
+.itemInfo.phoneNum .itemText{
+  color: #54cbf0;
+}
+
 .editBtn {
   display: flex;
   flex-direction: row;

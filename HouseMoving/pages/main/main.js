@@ -33,10 +33,14 @@ Page({
             txt: "用户评价",
             flag: 'evaluate'
           },
-          // {
-          //   txt: "优惠券",
-          //   flag: "discount"
-          // },
+          {
+            txt: "收费标准",
+            flag: 'rates'
+          },
+          {
+            txt: "优惠券",
+            flag: "discountCoupon"
+          },
           {
             txt: "客户订单",
             flag: 'clientOrders'
@@ -56,10 +60,10 @@ Page({
             txt: "用户评价",
             flag: 'evaluate'
           },
-          // {
-          //   txt: "优惠券",
-          //   flag: "discount"
-          // }
+          {
+            txt: "收费标准",
+            flag: 'rates'
+          }
         ];
       }
     

@@ -7,12 +7,15 @@
     "pages/evaluate/evaluate",
     "pages/discount/discount",
     "pages/clientOrders/clientOrders",
-    "pages/carTypeManagement/carTypeManagement"
+    "pages/carTypeManagement/carTypeManagement",
+    "pages/rates/rates",
+    "pages/webView/webView",
+    "pages/discountCoupon/discountCoupon"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#000",
-    "navigationBarTitleText": "我的小程序",
+    "navigationBarTitleText": "尊涵搬家",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
@@ -30,7 +33,7 @@
         "pagePath": "pages/highGradeMove/highGradeMove",
         "iconPath": "/img/movingGray2.png",
         "selectedIconPath": "/img/movingBlack2.png",
-        "text": "日式搬家"
+        "text": "精品搬家"
       },
       {
         "pagePath": "pages/main/main",

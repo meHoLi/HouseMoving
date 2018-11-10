@@ -1,0 +1,47 @@
+<!--pages/discountCoupon/discountCoupon.wxml-->
+<view class="container">
+  <view class='body'>
+    <view class='addDiscountCoupon'>
+      <view class='changeBody'>
+        <view class='changeItem'>
+          <view  class='title'>
+            <text>优惠码:</text>    
+          </view>
+          <input bindinput="bindSaleCodeInput" value='{{item.Code}}' placeholder="请输入优惠码"/>
+        </view>
+        
+        <view class='changeItem'>
+          <view class='title'>
+            <text>优惠金额:</text>
+          </view>
+          <input bindinput="bindSaleMoneyInput" value='{{item.Amount}}' type="number" placeholder="请输入优惠金额"/>
+        </view>
+      </view>
+
+      <view class='btn'>
+        <button class="addBtn" bindtap="add">添加优惠券</button>
+      </view>
+    </view>
+
+    <view class="discountCoupon" wx:for="{{list}}" wx:for-item="item" wx:key="id"> 
+      <view class='discountCouponBody'>
+        <view class='discountCouponItem'>
+          <view  class='title'>
+            <text>优惠码：:</text>    
+          </view>
+          <view>{{item.Code}}</view>
+        </view>
+        <view class='discountCouponItem'>
+          <view class='title'>
+            <text>优惠金额:</text>
+          </view>
+          <view>{{item.Amount}}</view>
+        </view>
+      </view>
+
+      <view class='isUsed'>
+        {{!!item.IsUsed?'已使用':'未使用'}}
+      </view>
+    </view>
+  </view>
+</view>

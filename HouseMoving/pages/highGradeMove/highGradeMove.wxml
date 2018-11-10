@@ -13,6 +13,7 @@
         <text class="carExplain-left-top">{{carExplainTop}}</text>
         <text class="carExplain-left-bottom">{{carExplainBottom}}</text>
       </view>
+      <view class='explain'>打包搬运，拆包还原</view>
       <!-- <button class="btn" bindtap="openCarExplain"> 车型说明 </button> -->
     </view>
     
@@ -106,8 +107,6 @@
               </view>
             </view>
           </view>
-           
-          <icon type='cancel' bindtap='delPassingPlace' data-index="{{index}}"></icon>
         </view>
 
         <view class='placeBottom'>
@@ -123,6 +122,8 @@
             </picker>
             <image src="../../img/next.png"></image>
           </view>
+
+          <icon type='cancel' bindtap='delPassingPlace' data-index="{{index}}"></icon>
 
         </view>
 
@@ -224,9 +225,63 @@
   </view>-->
   </scroll-view>
 
-  <modal title="提示" hidden="{{hiddenmodalput}}" cancel-text="服务完成后付款" confirm-text="立即付款" bindconfirm="confirm" bindcancel="cancel">
+  <modal title="" hidden="{{hiddenmodalput}}" cancel-text="服务完成后付款" confirm-text="立即付款" bindconfirm="confirm" bindcancel="cancel">
     <view class="modal">
-      下单成功，您可以“立即付款”，或者稍后去历史订单中完成付款。
+      <icon type="success" size="80"/>
+      <view class='modalTitle'>操作成功</view>
+      <view>订单已提交，我们会尽快为您安排服务</view>
+
+      <view class='orderDetail'>
+        <view>订单详情如下：</view>
+        <view class='orderItem'>
+          <view class='iconBody'>
+            <icon type="success_no_circle" size="12"/>
+          </view>
+          <view class='orderItem-title'>预估路程：</view>
+          <view class='orderItem-title'>{{orderDetail.Distance}} 公里</view>
+        </view>
+
+        <view class='orderItem'>
+          <view class='iconBody'>
+            <icon type="success_no_circle" size="12"/>
+          </view>
+          <view class='orderItem-title'>预估费用：</view>
+          <view class='orderItem-title'>{{orderDetail.PayPrice}} 元</view>
+        </view>
+
+        <view class='orderItem'>
+          <view class='iconBody'>
+            <icon type="success_no_circle" size="12"/>
+          </view>
+          <view class='orderItem-title'>预订类型：</view>
+          <view class='orderItem-title'>{{orderDetail.CarType}}</view>
+        </view>
+
+        <view class='orderItem'>
+          <view class='iconBody'>
+            <icon type="success_no_circle" size="12"/>
+          </view>
+          <view class='orderItem-title'>联系人：</view>
+          <view class='orderItem-title'>{{orderDetail.Name}}</view>
+        </view>
+
+        <view class='orderItem'>
+          <view class='iconBody'>
+            <icon type="success_no_circle" size="12"/>
+          </view>
+          <view class='orderItem-title'>搬家师傅：</view>
+          <view class='orderItem-title'>{{orderDetail.PeopleNum}} 人</view>
+        </view>
+
+        <view class='orderItem'>
+          <view class='iconBody'>
+            <icon type="success_no_circle" size="12"/>
+          </view>
+          <view class='orderItem-title'>服务时间：</view>
+          <view class='orderItem-title'>{{orderDetail.ServiceTime}}</view>
+        </view>
+      </view>
+
     </view>
   </modal>
 

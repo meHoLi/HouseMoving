@@ -1,0 +1,23 @@
+<!--pages/rates/rates.wxml-->
+<view class="container">
+  <view class="info-cont">
+
+    <view class='info'>
+      
+      <view class="infoMain">
+        <view wx:for="{{list}}" wx:key="{{index}}" class="item '{{'item'+index}}'">
+
+          <view bindtap='editInfo' data-index="{{index}}" data-item="{{item}}" class="inner txt">
+            <text class="item-text" data-index="{{index}}" data-item="{{item}}">{{item.txt}}</text>
+
+            <view data-index="{{index}}" data-item="{{item}}" class="item-edit">
+              <image mode="widthFix" src="../../img/next1.png"></image>
+            </view>
+          </view>
+        </view>
+
+      </view>
+    </view>
+
+  </view>
+</view>

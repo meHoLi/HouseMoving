@@ -51,6 +51,10 @@
   width: 100%;
 }
 
+.serviceTime .itemText{
+  color: #04be01;
+}
+
 .editBtn {
   display: flex;
   flex-direction: row;

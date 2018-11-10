@@ -43,6 +43,10 @@
   white-space: nowrap;
 }
 
+.explain{
+  color: red;
+}
+
 .btn{
   font-size: 36rpx;
 }
@@ -81,22 +85,25 @@
   display: flex;
   flex: 1;
   align-items: center;
-  padding:10rpx;
+  /* padding:10rpx; */
 }
 .liItem.place, .passingPlaceItem {
   flex: 1;
-  flex-direction: column;
+  /* flex-direction: column; */
+  flex-direction: row;
 }
 .placeTop, .placeBottom{
   width: 100%;
   display: flex;
   flex: 1;
   flex-direction: row;
-  margin-bottom:20rpx
+  /* margin-bottom:20rpx */
 }
 .placeBottom{
   margin-bottom: 0;
-  padding-left:350rpx;
+  /* padding-left:350rpx; */
+  padding-left: 10rpx;
+  align-items: center;
 }
 .houseNum input {
   width:120rpx;
@@ -105,7 +112,7 @@
   padding: 0 5px;
 }
 .title{
-  width:160rpx;
+  width:140rpx;
   display: flex;
   align-items: center;
   padding-right: 20rpx;
@@ -122,12 +129,12 @@
   display: flex;
   flex: 1;
   align-items: center;
-  margin-left: 20rpx;
+  margin-left: 10rpx;
 }
 .row-wrap image{
   width: 30rpx;
   height: 30rpx;
-  margin-left: 10rpx;
+  /* margin-left: 10rpx; */
 }
 .row-wrap text{
   color: #54cbf0;
@@ -149,14 +156,14 @@
   display: flex;
   flex: 1;
   align-items:center;
-  padding:10rpx;
+  padding:4rpx;
 }
 
 .movingTime, .contacts, .phone, .personNum, .saleCode, .remark{
   display:flex;
   flex:1;
   align-items:center;
-  padding:10rpx;
+  padding:4rpx;
 }
 
 .movingTime input, .contacts input, .phone input, .personNum input, .saleCode input, .remark input{
@@ -173,11 +180,12 @@
 
 /* 订单备注信息 */
 .remarkInfo{
-  height:152rpx;
+  flex: 1;
+  height:70rpx;
   font-size: 30rpx;
   text-indent: 28rpx;
   border: 1rpx solid gainsboro;
-  padding-top: 30rpx;
+  padding: 10rpx;
   margin: 0 auto;
   overflow: hidden;   
   position: relative; 
@@ -187,7 +195,7 @@
   color: gray;
   position: absolute;
   right: 25rpx;
-  bottom: 25rpx;
+  bottom: 6rpx;
 }
 /* 提示 */
 .tips{
@@ -223,6 +231,42 @@ modal{
   background: #fff;
 }
 .modal{
+  display:flex;
+  flex:1;
+  flex-direction:column;
   line-height:60rpx;
-  padding: 20rpx;
+  text-align: center;
+}
+.modal .modalTitle{
+  font-size: 46rpx;
+  color: #04be01;
+}
+
+.modal .orderDetail{
+  display:flex;
+  flex-direction:column;
+  text-align:left;
+}
+.modal .orderDetail .orderItem{
+  display: flex;
+  align-items:center;
+  color:#000;
+  padding:6rpx 0;
+  border-top: 2rpx solid #d7d7d7;
+}
+.modal .orderDetail .orderItem .iconBody{
+  display:flex;
+  width:36rpx;
+  height:36rpx;
+  text-align:center;
+  border-radius:50%;
+  border:1px solid #04be01;
+  margin-right: 10rpx;
+}
+.modal .orderDetail .orderItem .iconBody icon{
+  width: 36rpx;
+  height: 36rpx;
+}
+.modal .orderDetail .orderItem:nth-last-child(1){
+  border-bottom: 2rpx solid #d7d7d7;
 }

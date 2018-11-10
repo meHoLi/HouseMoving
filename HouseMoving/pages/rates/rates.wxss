@@ -1,0 +1,47 @@
+/* pages/rates/rates.wxss */
+.info-cont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.infoMain {
+  /* display: none; */
+  width: 100%;
+  margin: 0 auto;
+}
+
+.item {
+  position: relative;
+  border-bottom: 2rpx solid #eee;
+  height: 80rpx;
+  line-height: 80rpx;
+  overflow: hidden;
+  margin-left: 20rpx; 
+}
+
+.item:nth-child(1){
+  border-top: 2rpx solid #eee;
+}
+
+.inner.txt {
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.item-text{
+  display: flex;
+  flex: 1;
+}
+.item-edit{
+  width: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.item-edit image{
+  width: 40rpx;
+}

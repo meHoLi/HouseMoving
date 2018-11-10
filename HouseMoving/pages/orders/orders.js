@@ -76,6 +76,12 @@ Page({
         let list = res.data.Data
 
         if (!!list[0]) {
+          list = list.map(o => {
+            if (!!o.TuJingDian) {
+              o.TuJingDian = JSON.parse(o.TuJingDian)
+            }
+            return o
+          })
           that.setData({
             noClassDis: 'none',
             haveClassDis: 'block',
@@ -107,7 +113,7 @@ Page({
       },
       success: function (res) {debugger
 
-        if (!!res.data.Status){
+        if (!!res.data.Status) {
           wx.showToast({
             title: '订单取消成功',
             icon: 'none',
@@ -116,8 +122,25 @@ Page({
           })
           util.sendMsg();
           that.tempData();
+        } else {
+          if (res.data.Result == "504") {
+            wx.showToast({
+              title: res.data.Msg,
+              icon: 'none',
+              duration: 2000,
+              mask: true
+            })
+          } else {
+            wx.showToast({
+              title: '订单取消失败',
+              icon: 'none',
+              duration: 1000,
+              mask: true
+            })
+          }
+
         }
-        
+
       }
     })
 
@@ -206,12 +229,22 @@ Page({
           util.sendMsg();
           that.tempData();
         }else{
-          wx.showToast({
-            title: '退款失败',
-            icon: 'none',
-            duration: 1000,
-            mask: true
-          })
+          if (res.data.Result == "504"){
+            wx.showToast({
+              title: res.data.Msg,
+              icon: 'none',
+              duration: 2000,
+              mask: true
+            })
+          }else{
+            wx.showToast({
+              title: '退款失败',
+              icon: 'none',
+              duration: 1000,
+              mask: true
+            })
+          }
+          
         }
 
       }

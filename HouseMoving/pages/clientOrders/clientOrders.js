@@ -69,10 +69,17 @@ Page({
       header: {
         'content-type': 'application/json' // 默认值
       },
-      success: function (res) {
+      success: function (res) {debugger
         let list = res.data.Data
 
         if (!!list[0]) {
+          list = list.map(o => {
+            if (!!o.TuJingDian) {
+              o.TuJingDian = JSON.parse(o.TuJingDian)
+            }
+            return o
+          })
+
           that.setData({
             noClassDis: 'none',
             haveClassDis: 'block',
@@ -89,6 +96,72 @@ Page({
     })
   },
 
+  //打电话
+  tel: function (e) {
+    let Phone = e.currentTarget.dataset.item.Phone
+
+    wx.makePhoneCall({
+      phoneNumber: Phone,
+    })
+  },
+  //删除订单
+  deleteOrder: function(e){
+    let id = e.currentTarget.dataset.item.ID,
+      that = this;
+
+    wx.request({
+      url: app.globalData.url + '/Order/Delete', //仅为示例，并非真实的接口地址
+      data: {
+        id: id
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        debugger
+
+        if (!!res.data.Status) {
+          wx.showToast({
+            title: '删除订单成功',
+            icon: 'none',
+            duration: 1000,
+            mask: true
+          })
+          that.tempData();
+        }
+
+      }
+    })
+  },
+  //完成
+  finish: function (e) {
+    let id = e.currentTarget.dataset.item.ID,
+      that = this;
+
+    wx.request({
+      url: app.globalData.url + '/Order/Finish', //仅为示例，并非真实的接口地址
+      data: {
+        id: id
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        debugger
+
+        if (!!res.data.Status) {
+          wx.showToast({
+            title: '操作成功',
+            icon: 'none',
+            duration: 1000,
+            mask: true
+          })
+          that.tempData();
+        }
+
+      }
+    })
+  },
   //取消订单
   cancel:function(e){
     let id = e.currentTarget.dataset.item.ID,

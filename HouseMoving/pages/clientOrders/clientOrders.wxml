@@ -16,11 +16,7 @@
               <text class='title'>订单号：</text>
               <view class='itemText'>{{item.OrderNo}}</view>
             </view>
-            <view class="itemInfo">
-              <text class='title'>创建时间：</text>
-              <view class='itemText'>{{item.CreateTime}}</view>
-            </view>
-            <view class="itemInfo">
+            <view class="itemInfo serviceTime">
               <text class='title'>服务时间：</text>
               <view class='itemText'>{{item.ServiceTime}}</view>
             </view>
@@ -31,6 +27,15 @@
             <view class="itemInfo">
               <text class='title'>目的地：</text>
               <view class='itemText'>{{item.EndPlace}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>途经点：</text>
+              <view class='itemText tujingdian'>
+                <view wx:for="{{item.TuJingDian}}" wx:key="{{index}}" class="passingItem">
+                  {{item}}
+                </view>
+
+              </view>
             </view>
             <view class="itemInfo">
               <text class='title'>金额：</text>
@@ -52,21 +57,29 @@
               <text class='title'>联系人：</text>
               <view class='itemText'>{{item.Name}}</view>
             </view>
-            <view class="itemInfo">
+            <view class="itemInfo phoneNum">
               <text class='title'>电话：</text>
-              <view class='itemText'>{{item.Phone}}</view>
+              <view class='itemText' bindtap='tel' data-item='{{item}}'>{{item.Phone}}</view>
+            </view>
+            <view class="itemInfo">
+              <text class='title'>创建时间：</text>
+              <view class='itemText'>{{item.CreateTime}}</view>
             </view>
 
             <view class='editBtn'>
               <view class='left' style='display:{{item.PayState === "-1" ? "block" : "none"}}'>订单已取消</view>
+              <view class='left' style='display:{{item.PayState === "0" ? "block" : "none"}}'>订单待支付</view>
               <view class='left' style='display:{{item.PayState === "1" ? "block" : "none"}}'>订单已付款</view>
               <view class='left' style='display:{{item.PayState === "2" ? "block" : "none"}}'>订单已退款</view>
-              <!-- <view class='right'>
-                <button bindtap="cancel" class="cancelBtn" data-item='{{item}}' style='display:{{item.PayState === "0" ? "block" : "none"}}'>取消订单</button>
-                <button bindtap="payFor" class="payForBtn" data-item='{{item}}' style='display:{{item.PayState === "0" ? "block" : "none"}}'>待支付</button>
-                <button bindtap="refund" class="evaluateBtn" data-item='{{item}}' style='display:{{item.PayState === "1" ? "block" : "none"}}'>退款</button>
-                <button bindtap="evaluate" class="evaluateBtn" data-item='{{item}}' style='display:{{item.PayState === "1" ? "block" : "none"}}'>评价</button>
-              </view> -->
+              <view class='left' style='display:{{item.PayState === "3" ? "block" : "none"}}'>订单已完成</view>
+              <view class='right'>
+                <button bindtap="deleteOrder" class="delBtn" data-item='{{item}}' >删除</button>
+                <button bindtap="finish" class="finishBtn" data-item='{{item}}' style='display:{{item.PayState !== "3" ? "block" : "none"}}'>完成</button>
+                <!-- <button bindtap="cancel" class="cancelBtn" data-item='{{item}}' style='display:{{item.PayState === "0" ? "block" : "none"}}'>取消订单</button>
+                <button bindtap="payFor" class="payForBtn" data-item='{{item}}' style='display:{{item.PayState === "0" ? "block" : "none"}}'>去支付</button>
+                <button bindtap="refund" class="evaluateBtn" data-item='{{item}}' style='display:{{item.PayState === "1" ? "block" : "none"}}'>取消并退款</button>
+                <button bindtap="evaluate" class="evaluateBtn" data-item='{{item}}' style='display:{{item.PayState === "3" ? "block" : "none"}}'>评价</button> -->
+              </view>
             </view>
           </view>
         </view>
